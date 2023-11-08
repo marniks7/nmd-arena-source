@@ -1,17 +1,20 @@
 <template>
-  <div class="actions-container">
-    <button @click="clearCards">Clear</button>
-    <button @click="saveCards">Save</button>
-  </div>
+<!--  <div class="actions-container">-->
+<!--    <button @click="clearCards">Clear</button>-->
+<!--    <button @click="saveCards">Save</button>-->
+<!--  </div>-->
 
   <div class="slot-container">
     <div class="input-container">
-      <select v-model="selectedOption" id="select-option">
+      <select v-model="selectedRoleOption" id="select-role-option">
         <option value="option1">Runner</option>
         <option value="option2">Carry</option>
-        <option value="option3">Versatile (option1)</option>
-        <option value="option4">Versatile (option2)</option>
+        <option value="option3">Versatile</option>
         <option value="option5">Master of Fish</option>
+      </select>
+      <select v-model="selectedOptionCat" id="select-role-cat-option">
+        <option value="option1">Option1</option>
+        <option value="option2">Option2</option>
       </select>
       <select v-model="selectedMapOption" id="select-map-option">
         <option value="dark-prison">Dark Prison</option>
@@ -33,6 +36,7 @@
       </div>
     </div>
   </div>
+  <SlotRow :library="libraryCards" />
 
   <div class="bottom-grid" id="library">
     <!-- Library cards will be added via Vue data -->
@@ -53,6 +57,8 @@
             cols="2"
             v-for="card in libraryCards"
             :key="card.id"
+            @dragstart="startDrag(card, $event)"
+            draggable="true"
             class="gallery-image"
         >
           <v-img :src="card.image"/>
@@ -64,10 +70,13 @@
 </template>
 
 <script>
+import SlotRow from "@/components/SlotRow.vue";
+
 export default {
+  components: {SlotRow},
   data() {
     return {
-      selectedOption: 'option1',
+      selectedRoleOption: 'option1',
       selectedMapOption: 'dark-prison',
       topGridSlots: [
         {id: 1, text: ''},
@@ -104,9 +113,9 @@ export default {
     saveCards() {
       // Logic to save cards
     },
-    startDrag(item) {
-      // Logic for drag start
-      // You can set the drag data here
+    startDrag(card, event) {
+      // Set custom data attributes for the card being dragged
+      event.dataTransfer.setData('text/plain', JSON.stringify(card));
     },
     endDrag() {
       // Logic for drag end
