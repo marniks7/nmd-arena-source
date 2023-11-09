@@ -1,4 +1,3 @@
-<!-- SlotRow.vue -->
 <template>
   <v-container>
     <v-row>
@@ -8,26 +7,20 @@
           :key="slot.id"
           @drop="dropCard($event, slot)"
           @dragover.prevent
-          class="slot"
+          :class="{ 'empty-slot': slot.cards.length === 0, 'non-empty-slot': slot.cards.length > 0 }"
       >
         <div v-if="slot.cards.length > 0">
           <div v-for="(card, index) in slot.cards" :key="index">
             <v-img :src="card.image"
                    @dragstart="startDrag(card, slot, $event)"
                    @dragend="endDrag(card, slot, $event)"
+                   @dblclick="removeCard(card, slot, $event)"
                    draggable="true"/>
           </div>
         </div>
         <div v-else>
           Empty Slot
         </div>
-<!--        <div>-->
-<!--&lt;!&ndash;            :draggable="slot.card !== null"&ndash;&gt;-->
-<!--&lt;!&ndash;            @dragstart="startDrag(slot)"&ndash;&gt;-->
-<!--&lt;!&ndash;            @dragend="endDrag(slot)"&ndash;&gt;-->
-<!--&lt;!&ndash;            @dragover.prevent&ndash;&gt;-->
-<!--          <v-img :src="slot.card.image"/>-->
-<!--        </div>-->
       </v-col>
     </v-row>
   </v-container>
@@ -35,9 +28,6 @@
 
 <script>
 export default {
-  props: {
-    library: Array, // Array of cards from the ImageGallery
-  },
   data() {
     return {
       slots: [
@@ -71,8 +61,11 @@ export default {
     },
     endDrag(card, slot, event) {
       // Clear the currently dragged card
-      slot.cards.pop(card);
+      slot.cards.splice(slot.cards.indexOf(card), 1);
     },
+    removeCard(card, slot, event) {
+      slot.cards.splice(slot.cards.indexOf(card), 1);
+    }
   },
 };
 </script>
@@ -84,4 +77,11 @@ export default {
   text-align: center;
   cursor: pointer;
 }
+.empty-slot {
+  border: 1px solid #ccc;
+}
+
+.non-empty-slot {
+}
+
 </style>
