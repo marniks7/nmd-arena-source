@@ -7,7 +7,8 @@ import 'vuetify/styles'
 import {createVuetify} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-
+import { createPinia } from 'pinia'
+// import eventBus from './Plugins/event-bus';
 const customDarkTheme = {
     dark: true,
     colors: {
@@ -33,13 +34,17 @@ const vuetify = createVuetify({
     components,
     directives,
     theme: {
-        defaultTheme: 'dark',
+        defaultTheme: 'customDarkTheme',
         themes: {
             customDarkTheme,
             customLightTheme
         },
     },
 })
+
+const pinia = createPinia()
 const app = createApp(App)
 app.use(router)
+// app.use(eventBus);
+app.use(pinia);
 app.use(vuetify).mount('#app')

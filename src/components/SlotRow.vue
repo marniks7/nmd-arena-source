@@ -3,7 +3,7 @@
     <v-row>
       <v-col
           cols="2"
-          v-for="slot in slots"
+          v-for="slot in store.slots"
           :key="slot.id"
           @drop="dropCard($event, slot)"
           @dragover.prevent
@@ -14,7 +14,7 @@
             <v-img :src="card.image"
                    @dragstart="startDrag(card, slot, $event)"
                    @dragend="endDrag(card, slot, $event)"
-                   @dblclick="removeCard(card, slot, $event)"
+                   @click="removeCard(card, slot, $event)"
                    draggable="true"/>
           </div>
         </div>
@@ -26,20 +26,14 @@
   </v-container>
 </template>
 
+<script setup>
+import { useSlotsStore } from '@/stores/slots'
+
+// access the `store` variable anywhere in the component ✨
+const store = useSlotsStore()
+</script>
 <script>
 export default {
-  data() {
-    return {
-      slots: [
-        { id: 1, cards: [], },
-        { id: 2, cards: [], },
-        { id: 3, cards: [], },
-        { id: 4, cards: [], },
-        { id: 5, cards: [], },
-      ],
-      draggedCard: null,
-    };
-  },
   methods: {
     dropCard(event, slot) {
       event.preventDefault();
@@ -77,6 +71,7 @@ export default {
   text-align: center;
   cursor: pointer;
 }
+
 .empty-slot {
   border: 1px solid #ccc;
 }
