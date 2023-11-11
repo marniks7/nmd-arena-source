@@ -3,11 +3,11 @@ import {defineStore} from 'pinia'
 export const useSlotsStore = defineStore('slots', {
     state: () => ({
         slots: [
-            {id: 1, cards: [],},
-            {id: 2, cards: [],},
-            {id: 3, cards: [],},
-            {id: 4, cards: [],},
-            {id: 5, cards: [],},
+            {id: 1, cards: [], label_not_selected: 'Empty slot'},
+            {id: 2, cards: [], label_not_selected: 'Empty slot'},
+            {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss'},
+            {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss'},
+            {id: 5, cards: [], label_not_selected: 'Passive'},
         ],
     }),
     getters: {

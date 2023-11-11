@@ -7,7 +7,7 @@
           :key="slot.id"
           @drop="dropCard($event, slot)"
           @dragover.prevent
-          :class="{ 'empty-slot': slot.cards.length === 0, 'non-empty-slot': slot.cards.length > 0 }"
+          :class="{ 'empty-slot': slot.cards.length === 0, 'non-empty-slot': slot.cards.length > 0, 'd-lg-flex justify-center align-center': 1 === 1 }"
       >
         <div v-if="slot.cards.length > 0">
           <div v-for="(card, index) in slot.cards" :key="index">
@@ -17,10 +17,14 @@
                    @click="removeCard(card, slot, $event)"
                    draggable="true"/>
           </div>
+          <div>
+            <span>{{ slot.label }}</span>
+          </div>
         </div>
         <div v-else>
-          Empty Slot
+          {{ slot.label_not_selected }}
         </div>
+
       </v-col>
     </v-row>
   </v-container>

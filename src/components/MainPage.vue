@@ -1,25 +1,68 @@
 <template>
-  <!--  <div class="actions-container">-->
-  <!--    <button @click="clearCards">Clear</button>-->
-  <!--    <button @click="saveCards">Save</button>-->
-  <!--  </div>-->
   <v-container>
     <v-row no-gutters>
       <v-col>
-        <v-select
-            label="Role"
-            density="compact"
-            :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
-        ></v-select>
+        <v-select label="Role"
+                  density="compact"
+                  bg-color="undefined"
+                  hide-details="true"
+                  base-color="background"
+                  :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
+        >
+          <template #selection="{ item }">
+            <span class="text-h7 text-primary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
       </v-col>
       <v-col>
-        <v-select
-            label="Map"
-            v-model="selectedMap"
-            density="compact"
-            :items=maps
-            @update:modelValue="toggleTheme"
-        ></v-select>
+        <v-select label="Map"
+                  v-model="selectedMap"
+                  density="compact"
+                  hide-details="true"
+                  bg-color="undefined"
+                  base-color="background"
+                  :items=maps
+                  @update:modelValue="toggleTheme"
+        >
+          <template #selection="{ item }">
+            <span class="text-h5 text-primary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col>
+        <v-select label="Battlefield effect"
+                  density="compact"
+                  hide-details="true"
+                  bg-color="undefined"
+                  base-color="background"
+                  :items="['Predicament', 'Lucky', 'Discount', 'Weakness: Fire', 'Weakness: Wind', 'Weakness: Water', 'Weakness: Lightning',
+                  'Confined', 'Overload', 'Mirror', 'Irritable', 'Chaos', 'Solo']"
+        >
+          <template #selection="{ item }">
+            <span class="text-h7 text-secondary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -28,43 +71,10 @@
       </v-col>
     </v-row>
   </v-container>
-  <!--  <div class="slot-container">-->
-
-  <!--    <div class="input-container">-->
-
-  <!--&lt;!&ndash;      <select v-model="selectedRoleOption" id="select-role-option">&ndash;&gt;-->
-  <!--&lt;!&ndash;        <option value="runner">Runner</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;        <option value="carry">Carry</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;        <option value="versatile">Versatile</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;        <option value="master-of-fish">Master of Fish</option>&ndash;&gt;-->
-  <!--&lt;!&ndash;      </select>&ndash;&gt;-->
   <!--      <select v-model="selectedCatOption" id="select-role-cat-option">-->
   <!--        <option value="none"></option>-->
   <!--        <option value="option1">Option1</option>-->
   <!--        <option value="option2">Option2</option>-->
-  <!--      </select>-->
-  <!--      <select v-model="selectedMapOption" id="select-map-option">-->
-  <!--        <option value="dark-prison-hard">Dark Prison. Hard</option>-->
-  <!--        <option value="raven-nest-hard">Raven Nest. Hard</option>-->
-  <!--        <option value="ablaze-cave-hard">Ablaze Cave. Hard</option>-->
-  <!--        <option value="dark-prison-dangerous">Dark Prison. Dangerous</option>-->
-  <!--        <option value="raven-nest-dangerous">Raven Nest. Dangerous</option>-->
-  <!--        <option value="ablaze-cave-dangerous">Ablaze Cave. Dangerous</option>-->
-  <!--      </select>-->
-  <!--      <select v-model="selectedMapBattlefieldEffectOption" id="select-battlefield-effect-option">-->
-  <!--        <option value="predicament">Predicament</option>-->
-  <!--        <option value="lucky">Lucky</option>-->
-  <!--        <option value="discount">Discount</option>-->
-  <!--        <option value="fire">Weakness: Fire</option>-->
-  <!--        <option value="wind">Weakness: Wind</option>-->
-  <!--        <option value="water">Weakness: Water</option>-->
-  <!--        <option value="lightning">Weakness: Lightning</option>-->
-  <!--        <option value="confined">Confined</option>-->
-  <!--        <option value="overload">Overload</option>-->
-  <!--        <option value="mirror">Mirror</option>-->
-  <!--        <option value="irritable">Irritable</option>-->
-  <!--        <option value="chaos">Chaos</option>-->
-  <!--        <option value="solo">Solo</option>-->
   <!--      </select>-->
   <!--    </div>-->
 
@@ -92,12 +102,13 @@
           cols="2"
           v-for="card in libraryCards"
           :key="card.id"
-          @click="store.addCard(card)"
+          @click="addCard(store, card)"
           @dragstart="startDrag(card, $event)"
           draggable="true"
           class="gallery-image"
       >
         <v-img :src="card.image"/>
+        <div v-if="showTooltip === card.id" class="tooltip">Added to slot</div>
       </v-col>
     </v-row>
   </v-container>
@@ -112,12 +123,16 @@ import {useSlotsStore} from '@/stores/slots'
 const store = useSlotsStore()
 const theme = useTheme();
 const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard', 'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous']
-const selectedMap = ref(maps[0]);
+const selectedMap = ref(null);
 const toggleTheme = () => {
-  if (selectedMap.value === 'Dark Prison. Hard') {
-    theme.global.name.value = "customDarkTheme"
+  if (selectedMap.value === 'Dark Prison. Hard' || selectedMap.value === 'Dark Prison. Dangerous') {
+    theme.global.name.value = "darkPrisonTheme"
+  } else if (selectedMap.value === 'Ablaze Cave. Hard' || selectedMap.value === 'Ablaze Cave. Dangerous') {
+    theme.global.name.value = "ablazeCaveTheme"
+  } else if (selectedMap.value === 'Raven Nest. Hard' || selectedMap.value === 'Raven Nest. Dangerous') {
+    theme.global.name.value = "ravenNestTheme"
   } else {
-    theme.global.name.value = "customLightTheme"
+    theme.global.name.value = 'customDarkTheme'
   }
 };
 </script>
@@ -132,6 +147,7 @@ export default {
       // selectedMap: null,
       selectedCatOption: null,
       libraryCards: [],
+      showTooltip: null
     };
   },
   methods: {
@@ -151,6 +167,7 @@ export default {
           image,
           passive: true,
           text: cardName,
+          id: cardName
         });
       });
       cardImages.forEach((imagePath) => {
@@ -160,6 +177,7 @@ export default {
           image,
           passive: false,
           text: cardName,
+          id: cardName
         });
       });
     },
@@ -176,6 +194,15 @@ export default {
     },
     endDrag() {
       // Logic for drag end
+    },
+    addCard(store, card) {
+      store.addCard(card)
+      this.showTooltip = card.id;
+
+      // Simulate a delay for the tooltip to disappear (e.g., after 2 seconds).
+      setTimeout(() => {
+        this.showTooltip = null;
+      }, 2000);
     }
   },
   created() {
