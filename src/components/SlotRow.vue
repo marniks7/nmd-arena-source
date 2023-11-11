@@ -7,7 +7,7 @@
           :key="slot.id"
           @drop="dropCard($event, slot)"
           @dragover.prevent
-          :class="{ 'empty-slot': slot.cards.length === 0, 'non-empty-slot': slot.cards.length > 0, 'd-lg-flex justify-center align-center': 1 === 1 }"
+          :class="{ 'empty-slot': slot.cards.length === 0, 'non-empty-slot': slot.cards.length > 0}"
       >
         <div v-if="slot.cards.length > 0">
           <div v-for="(card, index) in slot.cards" :key="index">

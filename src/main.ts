@@ -10,31 +10,31 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {createPinia} from 'pinia'
 
-const customDarkTheme: ThemeDefinition = {
-    dark: true,
-    colors: {
-        background: "#15202b",
-        surface: "#15202b",
-        primary: "#3f51b5",
-        secondary: "#03dac6",
-        error: "#ff5722",
-    },
-};
-
-const customLightTheme: ThemeDefinition = {
-    colors: {
-        background: "#eee",
-        surface: "#15202b",
-        primary: "#3f51b5",
-        secondary: "#00ccff",
-        error: "#ffcc00",
-    },
-};
+// const customDarkTheme: ThemeDefinition = {
+//     dark: true,
+//     colors: {
+//         background: "#15202b",
+//         surface: "#15202b",
+//         primary: "#3f51b5",
+//         secondary: "#03dac6",
+//         error: "#ff5722",
+//     },
+// };
+//
+// const customLightTheme: ThemeDefinition = {
+//     colors: {
+//         background: "#eee",
+//         surface: "#15202b",
+//         primary: "#3f51b5",
+//         secondary: "#00ccff",
+//         error: "#ffcc00",
+//     },
+// };
 
 /*https://coolors.co/3d5a80-98c1d9-e0fbfc-ee6c4d-293241*/
 const ravenNestTheme: ThemeDefinition = {
     colors: {
-        background: "#3D5A80",
+        background: "#293241",
         surface: "#15202b",
         primary: "#EE6C4D",
         secondary: "#03dac6",
