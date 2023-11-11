@@ -37,8 +37,7 @@ const ravenNestTheme: ThemeDefinition = {
         background: "#293241",
         surface: "#15202b",
         primary: "#EE6C4D",
-        secondary: "#03dac6",
-        error: "#ff5722",
+        secondary: "#E0FBFC",
     },
 };
 /*https://coolors.co/50514f-b4adea-fdfff7-59ffa0-ffed65*/
@@ -47,18 +46,16 @@ const darkPrisonTheme: ThemeDefinition = {
         background: "#50514F",
         surface: "#15202b",
         primary: "#59FFA0",
-        secondary: "#03dac6",
-        error: "#ff5722",
+        secondary: "#FFED65",
     },
 };
-/*https://coolors.co/30362f-625834-a59132-fffbdb-da7422*/
+/*https://coolors.co/61988e-e1f2fe-ffc482-a5668b-49392c8*/
 const ablazeCaveTheme: ThemeDefinition = {
     colors: {
-        background: "#DA7422",
+        background: "#49392C",
         surface: "#15202b",
-        primary: "#30362F",
-        secondary: "#03dac6",
-        error: "#ff5722",
+        primary: "#FFC482",
+        secondary: "#E1F2FE"
     },
 };
 const vuetify = createVuetify({

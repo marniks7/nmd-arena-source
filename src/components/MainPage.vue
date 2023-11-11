@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row no-gutters>
-      <v-col>
+      <v-col class="v-col-auto">
         <v-select label="Role"
                   density="compact"
                   bg-color="undefined"
@@ -21,7 +21,28 @@
           </template>
         </v-select>
       </v-col>
-      <v-col>
+      <v-col class="v-col-auto">
+        <v-select label="Option"
+                  density="compact"
+                  hide-details="true"
+                  flat="true"
+                  bg-color="undefined"
+                  base-color="background"
+                  :items="['', 'Option1', 'Option2', 'Option3']"
+        >
+          <template #selection="{ item }">
+            <span class="text-h7 text-secondary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
+      </v-col>
+      <v-col class="v-col-6">
         <v-select label="Map"
                   v-model="selectedMap"
                   density="compact"
@@ -43,13 +64,14 @@
           </template>
         </v-select>
       </v-col>
-      <v-col>
+      <v-col class="v-col-auto">
         <v-select label="Battlefield effect"
                   density="compact"
                   hide-details="true"
+                  flat="true"
                   bg-color="undefined"
                   base-color="background"
-                  :items="['Predicament', 'Lucky', 'Discount', 'Weakness: Fire', 'Weakness: Wind', 'Weakness: Water', 'Weakness: Lightning',
+                  :items="['','Predicament', 'Lucky', 'Discount', 'Weakness: Fire', 'Weakness: Wind', 'Weakness: Water', 'Weakness: Lightning',
                   'Confined', 'Overload', 'Mirror', 'Irritable', 'Chaos', 'Solo']"
         >
           <template #selection="{ item }">
@@ -77,25 +99,6 @@
   <!--        <option value="option2">Option2</option>-->
   <!--      </select>-->
   <!--    </div>-->
-
-  <!--    <div class="top-grid">-->
-
-  <!--    </div>-->
-  <!--  </div>-->
-
-
-  <!-- Library cards will be added via Vue data -->
-  <!--      <div-->
-  <!--          class="card"-->
-  <!--          v-for="card in libraryCards"-->
-  <!--          :key="card.id"-->
-  <!--          draggable="true"-->
-  <!--          @dragstart="startDrag(card)"-->
-  <!--          @dragend="endDrag"-->
-  <!--      >-->
-  <!--        <img :src="card.image" :alt="card.text" />-->
-  <!--&lt;!&ndash;        {{ card.text }}&ndash;&gt;-->
-  <!--      </div>-->
   <v-container>
     <v-row>
       <v-col
