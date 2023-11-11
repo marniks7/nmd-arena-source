@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <v-container>
     <v-row no-gutters>
       <v-col class="v-col-auto">
@@ -25,7 +25,6 @@
         <v-select label="Option"
                   density="compact"
                   hide-details="true"
-                  flat="true"
                   bg-color="undefined"
                   base-color="background"
                   :items="['', 'Option1', 'Option2', 'Option3']"
@@ -68,20 +67,24 @@
         <v-select label="Battlefield effect"
                   density="compact"
                   hide-details="true"
-                  flat="true"
                   bg-color="undefined"
                   base-color="background"
-                  :items="['','Predicament', 'Lucky', 'Discount', 'Weakness: Fire', 'Weakness: Wind', 'Weakness: Water', 'Weakness: Lightning',
-                  'Confined', 'Overload', 'Mirror', 'Irritable', 'Chaos', 'Solo']"
+                  :items="battlefieldEffects"
         >
-          <template #selection="{ item }">
-            <span class="text-h7 text-secondary"> {{ item.title }}</span>
+          <template v-slot:selection="{ item }">
+            <div class="d-flex align-center">
+              <v-img class="scale mr-1" :src="item.raw.image"/>
+              <span class="text-h7 text-secondary">  {{ item.title }}</span>
+            </div>
           </template>
-          <template #item="{ item, props }">
-            <v-list-item v-bind="props">
-              <template #title>
-                <span>{{ item.title }}</span>
+          <template v-slot:item=" { item, props }">
+            <v-list-item v-bind="props" color="secondary" :prepend-avatar="item.image">
+              <template v-slot:prepend>
+                <div class="d-flex align-center">
+                  <v-img class="scale mr-1" :src="item.raw.image"/>
+                </div>
               </template>
+
             </v-list-item>
           </template>
         </v-select>
@@ -93,12 +96,6 @@
       </v-col>
     </v-row>
   </v-container>
-  <!--      <select v-model="selectedCatOption" id="select-role-cat-option">-->
-  <!--        <option value="none"></option>-->
-  <!--        <option value="option1">Option1</option>-->
-  <!--        <option value="option2">Option2</option>-->
-  <!--      </select>-->
-  <!--    </div>-->
   <v-container>
     <v-row>
       <v-col
@@ -150,16 +147,26 @@ export default {
       // selectedMap: null,
       selectedCatOption: null,
       libraryCards: [],
-      showTooltip: null
+      showTooltip: null,
+      battlefieldEffects: [
+      ]
     };
   },
   methods: {
     loadCardImages() {
-      const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,PNG,JPEG}', {
+      const battlefieldEffects = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,PNG,JPEG}', {
         eager: true,
         as: 'url'
       }))
-      const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,PNG,JPEG}', {
+      battlefieldEffects.forEach((imagePath) => {
+        const image = new URL(imagePath, import.meta.url).href;
+        const name = imagePath.split('/').pop().replace(/\.\w+$/, '');
+        this.battlefieldEffects.push({
+          image,
+          title: name,
+        })
+      })
+      const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,PNG,JPEG}', {
         eager: true,
         as: 'url'
       }))
@@ -173,6 +180,10 @@ export default {
           id: cardName
         });
       });
+      const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,PNG,JPEG}', {
+        eager: true,
+        as: 'url'
+      }))
       cardImages.forEach((imagePath) => {
         const image = new URL(imagePath, import.meta.url).href;
         const cardName = imagePath.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
@@ -214,3 +225,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+.scale {
+  height: 1em;
+  width: 1em;
+}
+</style>
