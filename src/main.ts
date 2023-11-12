@@ -1,7 +1,6 @@
 import './assets/main.css'
 
 import {createApp} from 'vue'
-import App from './App.vue'
 import router from './router'
 import 'vuetify/styles'
 import type {ThemeDefinition} from 'vuetify'
@@ -9,27 +8,9 @@ import {createVuetify,} from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import {createPinia} from 'pinia'
-
-// const customDarkTheme: ThemeDefinition = {
-//     dark: true,
-//     colors: {
-//         background: "#15202b",
-//         surface: "#15202b",
-//         primary: "#3f51b5",
-//         secondary: "#03dac6",
-//         error: "#ff5722",
-//     },
-// };
-//
-// const customLightTheme: ThemeDefinition = {
-//     colors: {
-//         background: "#eee",
-//         surface: "#15202b",
-//         primary: "#3f51b5",
-//         secondary: "#00ccff",
-//         error: "#ffcc00",
-//     },
-// };
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import App from './App.vue'
+import {figureTheme} from "@/functions/theme";
 
 /*https://coolors.co/3d5a80-98c1d9-e0fbfc-ee6c4d-293241*/
 const ravenNestTheme: ThemeDefinition = {
@@ -62,11 +43,20 @@ const ablazeCaveTheme: ThemeDefinition = {
         info: "#FDFFF7",
     },
 };
+
+
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+const app = createApp(App)
+app.use(router)
+app.use(pinia);
+const currentTheme = figureTheme()
 const vuetify = createVuetify({
     components,
     directives,
     theme: {
-        defaultTheme: 'dark',
+        defaultTheme: currentTheme,
         themes: {
             darkPrisonTheme,
             ablazeCaveTheme,
@@ -74,11 +64,4 @@ const vuetify = createVuetify({
         },
     },
 })
-
-
-const pinia = createPinia()
-const app = createApp(App)
-app.use(router)
-// app.use(eventBus);
-app.use(pinia);
 app.use(vuetify).mount('#app')

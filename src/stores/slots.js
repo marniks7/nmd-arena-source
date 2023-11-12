@@ -2,6 +2,10 @@ import {defineStore} from 'pinia'
 
 export const useSlotsStore = defineStore('slots', {
     state: () => ({
+        role: null,
+        roleOption: null,
+        map: null,
+        battlefieldEffect: null,
         slots: [
             {id: 1, cards: [], label_not_selected: 'Empty slot'},
             {id: 2, cards: [], label_not_selected: 'Empty slot'},
@@ -43,4 +47,5 @@ export const useSlotsStore = defineStore('slots', {
             }
         }
     },
+    persist: true,
 })

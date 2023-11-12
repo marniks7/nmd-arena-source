@@ -3,6 +3,7 @@
     <v-row no-gutters>
       <v-col>
         <v-select label="Role"
+                  v-model="store.role"
                   density="compact"
                   bg-color="undefined"
                   hide-details="true"
@@ -21,6 +22,7 @@
           </template>
         </v-select>
         <v-select label="Option"
+                  v-model="store.roleOption"
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"

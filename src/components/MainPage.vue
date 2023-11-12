@@ -1,15 +1,15 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <v-container fluid="true">
+  <v-container fluid>
     <v-row no-gutters>
       <v-col>
         <v-select label="Map"
-                  v-model="selectedMap"
+                  v-model="store.map"
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
                   :items=maps
-                  @update:modelValue="toggleTheme"
+                  @update:modelValue="toggleThemeInternal"
         >
           <template #selection="{ item }">
             <span class="text-lg-h2 text-primary"> {{ item.title }}</span>
@@ -26,6 +26,7 @@
       <v-col align-self="end" cols="2">
         <v-select label="Battlefield effect"
                   density="compact"
+                  v-model="store.battlefieldEffect"
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
@@ -56,7 +57,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container fluid="true">
+  <v-container fluid>
     <v-row no-gutters>
       <v-col
           cols="2"
@@ -75,41 +76,29 @@
 </template>
 
 <script setup>
-import {useTheme} from "vuetify";
-import {ref} from "vue";
 import {useSlotsStore} from '@/stores/slots'
+import {useTheme} from "vuetify";
+import {toggleTheme} from "@/functions/theme";
 
+const theme = useTheme();
 // access the `store` variable anywhere in the component ✨
 const store = useSlotsStore()
-const theme = useTheme();
 const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard', 'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous']
-const selectedMap = ref(null);
-const toggleTheme = () => {
-  if (selectedMap.value === 'Dark Prison. Hard' || selectedMap.value === 'Dark Prison. Dangerous') {
-    theme.global.name.value = "darkPrisonTheme"
-  } else if (selectedMap.value === 'Ablaze Cave. Hard' || selectedMap.value === 'Ablaze Cave. Dangerous') {
-    theme.global.name.value = "ablazeCaveTheme"
-  } else if (selectedMap.value === 'Raven Nest. Hard' || selectedMap.value === 'Raven Nest. Dangerous') {
-    theme.global.name.value = "ravenNestTheme"
-  } else {
-    theme.global.name.value = 'customDarkTheme'
-  }
-};
+const toggleThemeInternal = () => {
+  toggleTheme(theme)
+}
 </script>
 <script>
 import SlotRow from "@/components/SlotRow.vue";
+import {toggleTheme} from "@/functions/theme";
 
 export default {
   components: {SlotRow},
   data() {
     return {
-      selectedRoleOption: 'runner',
-      // selectedMap: null,
-      selectedCatOption: null,
       libraryCards: [],
       showTooltip: null,
-      battlefieldEffects: [
-      ]
+      battlefieldEffects: [],
     };
   },
   methods: {
@@ -119,13 +108,19 @@ export default {
         as: 'url'
       }))
       battlefieldEffects.forEach((imagePath) => {
-        const image = new URL(imagePath, import.meta.url).href;
-        const name = imagePath.split('/').pop().replace(/\.\w+$/, '');
-        this.battlefieldEffects.push({
-          image,
-          title: name,
-        })
-      })
+            const image = new URL(imagePath, import.meta.url).href;
+            let name = imagePath.split('/').pop().replace(/\.\w+$/, '');
+            const dashIndex = name.lastIndexOf('-');
+
+            if (dashIndex !== -1) {
+              name = name.substring(0, dashIndex);
+            }
+            this.battlefieldEffects.push({
+              image,
+              title: name,
+            })
+          }
+      )
       const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
         as: 'url'
@@ -158,17 +153,21 @@ export default {
 
     clearCards() {
       // Logic to clear cards
-    },
+    }
+    ,
     saveCards() {
       // Logic to save cards
-    },
+    }
+    ,
     startDrag(card, event) {
       // Set custom data attributes for the card being dragged
       event.dataTransfer.setData('text/plain', JSON.stringify(card));
-    },
+    }
+    ,
     endDrag() {
       // Logic for drag end
-    },
+    }
+    ,
     addCard(store, card) {
       store.addCard(card)
       this.showTooltip = card.id;
@@ -182,6 +181,7 @@ export default {
   created() {
     // Call the loadCardImages method when the component is created
     this.loadCardImages();
+    // toggleTheme();
   },
 };
 </script>
