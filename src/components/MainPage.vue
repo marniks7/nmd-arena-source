@@ -107,6 +107,10 @@ export default {
         eager: true,
         as: 'url'
       }))
+
+      this.battlefieldEffects.push({
+        title: '',
+      })
       battlefieldEffects.forEach((imagePath) => {
             const image = new URL(imagePath, import.meta.url).href;
             let name = imagePath.split('/').pop().replace(/\.\w+$/, '');
@@ -121,6 +125,7 @@ export default {
             })
           }
       )
+
       const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
         as: 'url'
