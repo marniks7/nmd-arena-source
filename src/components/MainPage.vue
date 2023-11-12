@@ -23,7 +23,7 @@
           </template>
         </v-select>
       </v-col>
-      <v-col align-self="end">
+      <v-col align-self="end" cols="2">
         <v-select label="Battlefield effect"
                   density="compact"
                   hide-details="true"
