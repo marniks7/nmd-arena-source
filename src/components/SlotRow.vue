@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid="true">
+<!--  <v-container fluid="true">-->
     <v-row no-gutters>
       <v-col>
         <v-select label="Role"
@@ -10,7 +10,7 @@
                   :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
         >
           <template #selection="{ item }">
-            <span class="text-h3 text-primary"> {{ item.title }}</span>
+            <span class="text-lg-h3 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -28,7 +28,7 @@
                   :items="['', 'Option1', 'Option2', 'Option3']"
         >
           <template #selection="{ item }">
-            <span class="text-h5 text-secondary"> {{ item.title }}</span>
+            <span class="text-lg-h5 text-secondary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -56,16 +56,16 @@
                    draggable="true"/>
           </div>
           <div class="text-center">
-            <span class="text-h5 text-info">{{ slot.label }}</span>
+            <span class="text-lg-h5 text-info">{{ slot.label }}</span>
           </div>
         </div>
         <div class="text-center" v-else>
-          <span class="text-h5 text-info">{{ slot.label_not_selected }}</span>
+          <span class="text-lg-h5 text-info">{{ slot.label_not_selected }}</span>
         </div>
 
       </v-col>
     </v-row>
-  </v-container>
+<!--  </v-container>-->
 </template>
 
 <script setup>

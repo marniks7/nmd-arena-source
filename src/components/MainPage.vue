@@ -12,7 +12,7 @@
                   @update:modelValue="toggleTheme"
         >
           <template #selection="{ item }">
-            <span class="text-h2 text-primary"> {{ item.title }}</span>
+            <span class="text-lg-h2 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -34,7 +34,7 @@
           <template v-slot:selection="{ item }">
             <div class="d-flex align-center">
               <v-img class="scale mr-1" :src="item.raw.image"/>
-              <span class="text-h4 text-secondary">  {{ item.title }}</span>
+              <span class="text-lg-h4 text-secondary">  {{ item.title }}</span>
             </div>
           </template>
           <template v-slot:item=" { item, props }">
@@ -57,7 +57,7 @@
     </v-row>
   </v-container>
   <v-container fluid="true">
-    <v-row>
+    <v-row no-gutters>
       <v-col
           cols="2"
           v-for="card in libraryCards"
