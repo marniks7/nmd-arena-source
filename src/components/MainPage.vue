@@ -1,47 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <v-container>
+  <v-container fluid="true">
     <v-row no-gutters>
-      <v-col class="v-col-auto">
-        <v-select label="Role"
-                  density="compact"
-                  bg-color="undefined"
-                  hide-details="true"
-                  base-color="background"
-                  :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
-        >
-          <template #selection="{ item }">
-            <span class="text-h7 text-primary"> {{ item.title }}</span>
-          </template>
-          <template #item="{ item, props }">
-            <v-list-item v-bind="props">
-              <template #title>
-                <span>{{ item.title }}</span>
-              </template>
-            </v-list-item>
-          </template>
-        </v-select>
-      </v-col>
-      <v-col class="v-col-auto">
-        <v-select label="Option"
-                  density="compact"
-                  hide-details="true"
-                  bg-color="undefined"
-                  base-color="background"
-                  :items="['', 'Option1', 'Option2', 'Option3']"
-        >
-          <template #selection="{ item }">
-            <span class="text-h7 text-secondary"> {{ item.title }}</span>
-          </template>
-          <template #item="{ item, props }">
-            <v-list-item v-bind="props">
-              <template #title>
-                <span>{{ item.title }}</span>
-              </template>
-            </v-list-item>
-          </template>
-        </v-select>
-      </v-col>
-      <v-col class="v-col-6">
+      <v-col>
         <v-select label="Map"
                   v-model="selectedMap"
                   density="compact"
@@ -52,7 +12,7 @@
                   @update:modelValue="toggleTheme"
         >
           <template #selection="{ item }">
-            <span class="text-h5 text-primary"> {{ item.title }}</span>
+            <span class="text-h2 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -63,7 +23,7 @@
           </template>
         </v-select>
       </v-col>
-      <v-col class="v-col-auto">
+      <v-col align-self="end">
         <v-select label="Battlefield effect"
                   density="compact"
                   hide-details="true"
@@ -74,7 +34,7 @@
           <template v-slot:selection="{ item }">
             <div class="d-flex align-center">
               <v-img class="scale mr-1" :src="item.raw.image"/>
-              <span class="text-h7 text-secondary">  {{ item.title }}</span>
+              <span class="text-h4 text-secondary">  {{ item.title }}</span>
             </div>
           </template>
           <template v-slot:item=" { item, props }">
@@ -96,7 +56,7 @@
       </v-col>
     </v-row>
   </v-container>
-  <v-container>
+  <v-container fluid="true">
     <v-row>
       <v-col
           cols="2"
@@ -228,7 +188,7 @@ export default {
 <style scoped>
 
 .scale {
-  height: 1em;
-  width: 1em;
+  height: 2em;
+  width: 2em;
 }
 </style>

@@ -1,6 +1,44 @@
 <template>
-  <v-container>
-    <v-row>
+  <v-container fluid="true">
+    <v-row no-gutters>
+      <v-col>
+        <v-select label="Role"
+                  density="compact"
+                  bg-color="undefined"
+                  hide-details="true"
+                  base-color="background"
+                  :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
+        >
+          <template #selection="{ item }">
+            <span class="text-h3 text-primary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
+        <v-select label="Option"
+                  density="compact"
+                  hide-details="true"
+                  bg-color="undefined"
+                  base-color="background"
+                  :items="['', 'Option1', 'Option2', 'Option3']"
+        >
+          <template #selection="{ item }">
+            <span class="text-h5 text-secondary"> {{ item.title }}</span>
+          </template>
+          <template #item="{ item, props }">
+            <v-list-item v-bind="props">
+              <template #title>
+                <span>{{ item.title }}</span>
+              </template>
+            </v-list-item>
+          </template>
+        </v-select>
+      </v-col>
       <v-col
           cols="2"
           v-for="slot in store.slots"
@@ -17,12 +55,12 @@
                    @click="removeCard(card, slot, $event)"
                    draggable="true"/>
           </div>
-          <div>
-            <span>{{ slot.label }}</span>
+          <div class="text-center">
+            <span class="text-h5 text-info">{{ slot.label }}</span>
           </div>
         </div>
-        <div v-else>
-          {{ slot.label_not_selected }}
+        <div class="text-center" v-else>
+          <span class="text-h5 text-info">{{ slot.label_not_selected }}</span>
         </div>
 
       </v-col>
@@ -78,6 +116,7 @@ export default {
 
 .empty-slot {
   border: 1px solid #ccc;
+  text-align: center;
 }
 
 .non-empty-slot {

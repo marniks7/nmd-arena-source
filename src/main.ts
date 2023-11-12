@@ -38,15 +38,18 @@ const ravenNestTheme: ThemeDefinition = {
         surface: "#15202b",
         primary: "#EE6C4D",
         secondary: "#E0FBFC",
+        info: "#FDFFF7",
     },
 };
 /*https://coolors.co/50514f-b4adea-fdfff7-59ffa0-ffed65*/
+/*https://www.sessions.edu/color-calculator/*/
 const darkPrisonTheme: ThemeDefinition = {
     colors: {
         background: "#50514F",
         surface: "#15202b",
         primary: "#59FFA0",
-        secondary: "#FFED65",
+        secondary: "#ffbd59",
+        info: "#FDFFF7",
     },
 };
 /*https://coolors.co/61988e-e1f2fe-ffc482-a5668b-49392c8*/
@@ -55,7 +58,8 @@ const ablazeCaveTheme: ThemeDefinition = {
         background: "#49392C",
         surface: "#15202b",
         primary: "#FFC482",
-        secondary: "#E1F2FE"
+        secondary: "#E1F2FE",
+        info: "#FDFFF7",
     },
 };
 const vuetify = createVuetify({
