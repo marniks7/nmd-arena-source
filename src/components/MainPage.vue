@@ -51,9 +51,25 @@
         </v-select>
       </v-col>
     </v-row>
-    <v-row no-gutters>
+    <v-row no-gutters v-for="item in store.items" :key="item.id">
       <v-col>
-        <SlotRow/>
+        <SlotRow v-bind:slt="item"/>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn class="mr-1" @click="store.addNewRow()">
+          Add one more row
+        </v-btn>
+        <v-btn class="mr-1" @click="store.removeRow()">
+          Remove last row
+        </v-btn>
+        <v-btn class="mr-1" @click="store.clearCards()">
+          Clear Cards
+        </v-btn>
+        <v-btn class="mr-1" @click="store.clearAll()">
+          Clear All
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>

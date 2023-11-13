@@ -3,12 +3,12 @@
     <v-row no-gutters>
       <v-col>
         <v-select label="Role"
-                  v-model="store.role"
+                  v-model="slt.role"
                   density="compact"
                   bg-color="undefined"
                   hide-details="true"
                   base-color="background"
-                  :items="['Runner', 'Carry', 'Versatile', 'Master of Fish']"
+                  :items="['Runner', 'Carry', 'Versatile', 'Master of Fish', 'Support']"
         >
           <template #selection="{ item }">
             <span class="text-lg-h3 text-primary"> {{ item.title }}</span>
@@ -22,7 +22,7 @@
           </template>
         </v-select>
         <v-select label="Option"
-                  v-model="store.roleOption"
+                  v-model="slt.roleOption"
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
@@ -43,7 +43,7 @@
       </v-col>
       <v-col
           cols="2"
-          v-for="slot in store.slots"
+          v-for="slot in slt.slots"
           :key="slot.id"
           @drop="dropCard($event, slot)"
           @dragover.prevent
@@ -78,6 +78,11 @@ const store = useSlotsStore()
 </script>
 <script>
 export default {
+  props: {
+    slt: {
+      type: Object
+    }
+  },
   methods: {
     dropCard(event, slot) {
       event.preventDefault();
