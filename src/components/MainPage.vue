@@ -25,8 +25,8 @@
       </v-col>
       <v-col align-self="end" cols="2">
         <v-select label="Battlefield effect"
-                  density="compact"
                   v-model="store.battlefieldEffect"
+                  density="compact"
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
