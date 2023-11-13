@@ -58,11 +58,13 @@
                    draggable="true"/>
           </div>
           <div class="text-center">
-            <span class="text-lg-h5 text-info">{{ slot.label }}</span>
+            <span v-if="this.$vuetify.display.mobile" class="text-lg-h5 text-caption text-info truncated-text">{{ slot.labelSmall }}</span>
+            <span v-else-if="!this.$vuetify.display.mobile" class="text-lg-h5 text-caption text-info truncated-text">{{ slot.label }}</span>
           </div>
         </div>
         <div class="text-center" v-else>
-          <span class="text-lg-h5 text-info">{{ slot.label_not_selected }}</span>
+
+          <span class="text-lg-h5 text-subtitle-2 text-info">{{ slot.label_not_selected }}</span>
         </div>
 
       </v-col>
@@ -71,10 +73,6 @@
 </template>
 
 <script setup>
-import { useSlotsStore } from '@/stores/slots'
-
-// access the `store` variable anywhere in the component ✨
-const store = useSlotsStore()
 </script>
 <script>
 export default {
@@ -127,6 +125,11 @@ export default {
 }
 
 .non-empty-slot {
+}
+
+.truncated-text {
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 </style>

@@ -11,8 +11,8 @@ let initialState = {
         slots: [
             {id: 1, cards: [], label_not_selected: 'Empty slot'},
             {id: 2, cards: [], label_not_selected: 'Empty slot'},
-            {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss'},
-            {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss'},
+            {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss', labelSmall: '1st boss'},
+            {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss', labelSmall: '2nd'},
             {id: 5, cards: [], label_not_selected: 'Passive'},
         ]
     }],
@@ -37,8 +37,8 @@ export const useSlotsStore = defineStore('slots', {
                 slots: [
                     {id: 1, cards: [], label_not_selected: 'Empty slot'},
                     {id: 2, cards: [], label_not_selected: 'Empty slot'},
-                    {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss'},
-                    {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss'},
+                    {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss', labelSmall: '1st boss'},
+                    {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss', labelSmall: '2nd'},
                     {id: 5, cards: [], label_not_selected: 'Passive'},
                 ]
             })

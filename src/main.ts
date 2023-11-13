@@ -53,6 +53,9 @@ app.use(router)
 app.use(pinia);
 const currentTheme = figureTheme()
 const vuetify = createVuetify({
+    display: {
+        mobileBreakpoint: 'sm'
+    },
     components,
     directives,
     theme: {
