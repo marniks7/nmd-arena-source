@@ -1,18 +1,19 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <v-container fluid>
-    <v-row no-gutters>
-      <v-col>
+  <v-container>
+    <v-row no-gutters justify-sm="space-between">
+      <v-col align-self="start" cols="auto">
         <v-select label="Map"
                   v-model="store.map"
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
+                  class="child-sm-p-1"
                   :items=maps
                   @update:modelValue="toggleThemeInternal"
         >
-          <template #selection="{ item }">
-            <span class="text-lg-h2 text-primary"> {{ item.title }}</span>
+          <template #selection="{ item }" >
+            <span class="text-h6 text-sm-h3 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -22,6 +23,7 @@
             </v-list-item>
           </template>
         </v-select>
+
       </v-col>
       <v-col align-self="end" cols="2">
         <v-select label="Battlefield effect"
@@ -29,13 +31,14 @@
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
+                  class="child-sm-p-1"
                   base-color="background"
                   :items="battlefieldEffects"
         >
           <template v-slot:selection="{ item }">
             <div class="d-flex align-center">
               <v-img class="scale mr-1" :src="item.raw.image"/>
-              <span class="text-lg-h4 text-secondary">  {{ item.title }}</span>
+              <span class="text-caption text-sm-h6 text-secondary">  {{ item.title }}</span>
             </div>
           </template>
           <template v-slot:item=" { item, props }">
@@ -212,4 +215,10 @@ export default {
   height: 2em;
   width: 2em;
 }
+@media screen and (max-width: 960px) {
+  .child-sm-p-1 ::v-deep(.v-field) {
+    --v-field-padding-start: 4px;
+  }
+}
+
 </style>

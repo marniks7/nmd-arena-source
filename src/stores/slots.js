@@ -7,7 +7,7 @@ let initialState = {
     items: [{
         id: 1,
         role: null,
-        roleOption: null,
+        roleOption: "",
         slots: [
             {id: 1, cards: [], label_not_selected: 'Empty slot'},
             {id: 2, cards: [], label_not_selected: 'Empty slot'},
@@ -33,7 +33,7 @@ export const useSlotsStore = defineStore('slots', {
             this.items.push({
                 id: this.count,
                 role: null,
-                roleOption: null,
+                roleOption: "",
                 slots: [
                     {id: 1, cards: [], label_not_selected: 'Empty slot'},
                     {id: 2, cards: [], label_not_selected: 'Empty slot'},

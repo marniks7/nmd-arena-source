@@ -8,10 +8,11 @@
                   bg-color="undefined"
                   hide-details="true"
                   base-color="background"
+                  class="child-sm-p-1"
                   :items="['Runner', 'Carry', 'Versatile', 'Master of Fish', 'Support']"
         >
           <template #selection="{ item }">
-            <span class="text-lg-h3 text-primary"> {{ item.title }}</span>
+            <span class="text-caption text-sm-h4 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -27,10 +28,11 @@
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
+                  class="child-sm-p-1"
                   :items="['', 'Option1', 'Option2', 'Option3']"
         >
           <template #selection="{ item }">
-            <span class="text-lg-h5 text-secondary"> {{ item.title }}</span>
+            <span class="text-caption text-sm-h6 text-secondary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
             <v-list-item v-bind="props">
@@ -130,6 +132,12 @@ export default {
 .truncated-text {
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 960px) {
+  .child-sm-p-1 ::v-deep(.v-field) {
+    --v-field-padding-start: 4px;
+  }
 }
 
 </style>
