@@ -44,17 +44,11 @@ export const useSlotsStore = defineStore('slots', {
             })
         },
         removeRow() {
-            if (!confirm("Do you really want to remove row?")) {
-                return
-            }
             this.items.splice(this.items.length - 1, this.items.length)
             this.count = this.count - 1
 
         },
         clearCards() {
-            if (!confirm("Do you really want to clear cards?")) {
-                return
-            }
             for (const currentItem of this.items) {
                 for (const slot of currentItem.slots) {
                     slot.cards = []
@@ -62,9 +56,6 @@ export const useSlotsStore = defineStore('slots', {
             }
         },
         clearAll() {
-            if (!confirm("Do you really want to clear everything?")) {
-                return
-            }
             Object.assign(this, initialState);
         },
         addCard(card) {
