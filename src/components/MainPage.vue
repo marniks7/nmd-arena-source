@@ -59,6 +59,9 @@
         <SlotRow v-bind:slt="item"/>
       </v-col>
     </v-row>
+  </v-container>
+
+  <v-container>
     <v-row>
       <v-col>
         <v-btn class="mr-1" @click="store.addNewRow()">
@@ -73,10 +76,8 @@
         <v-btn class="mr-1" @click="store.clearAll()">
           Clear All
         </v-btn>
-        <div v-if="loading">{{ loadingText }}</div>
-        <div v-else>
-          <v-btn class="mr-1" @click="takeScreenshot()">Take Screenshot</v-btn>
-        </div>
+        <span v-if="loading">{{ loadingText }}</span>
+        <v-btn v-else class="mr-1" @click="takeScreenshot()">Take Screenshot</v-btn>
 
       </v-col>
     </v-row>
@@ -274,6 +275,7 @@ export default {
   height: 2em;
   width: 2em;
 }
+
 @media screen and (max-width: 960px) {
   .child-sm-p-1 ::v-deep(.v-field) {
     --v-field-padding-start: 4px;
