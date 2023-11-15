@@ -67,15 +67,79 @@
         <v-btn class="mr-1" @click="store.addNewRow()">
           Add one more row
         </v-btn>
-        <v-btn class="mr-1" @click="store.removeRow()">
-          Remove last row
-        </v-btn>
-        <v-btn class="mr-1" @click="store.clearCards()">
-          Clear Cards
-        </v-btn>
-        <v-btn class="mr-1" @click="store.clearAll()">
-          Clear All
-        </v-btn>
+        <v-dialog width="auto">
+          <template v-slot:activator="{ props }">
+            <v-btn  class="mr-1" v-bind="props" text="Remove last row"> </v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    text="Confirm remove last row"
+                    color="primary"
+                    @click="isActive.value = false; store.removeRow();"
+                />
+                <v-btn
+                    text="Cancel"
+                    color="secondary"
+                    @click="isActive.value = false"
+                />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+
+        <v-dialog width="auto">
+          <template v-slot:activator="{ props }">
+            <v-btn class="mr-1" v-bind="props" text="Clear Cards"> </v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    text="Confirm clear cards"
+                    color="primary"
+                    @click="isActive.value = false; store.clearCards()"
+                />
+                <v-btn
+                    text="Cancel"
+                    color="secondary"
+                    @click="isActive.value = false"
+                />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+        <v-dialog width="auto">
+          <template v-slot:activator="{ props }">
+            <v-btn class="mr-1" v-bind="props" text="Clear All"> </v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    text="Confirm clear all"
+                    color="primary"
+                    @click="isActive.value = false; store.clearAll()"
+                />
+                <v-btn
+                    text="Cancel"
+                    color="secondary"
+                    @click="isActive.value = false"
+                />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
         <span v-if="loading">{{ loadingText }}</span>
         <v-btn v-else class="mr-1" @click="takeScreenshot()">Take Screenshot</v-btn>
 
@@ -122,6 +186,7 @@ export default {
   components: {SlotRow},
   data() {
     return {
+      dialog: false,
       loading: false,
       loadingText: "",
       libraryCards: [],
