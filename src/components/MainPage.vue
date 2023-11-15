@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <v-container>
+  <v-container id="main-working-area">
     <v-row no-gutters justify-sm="space-between">
       <v-col align-self="start" cols="auto">
         <v-select label="Map"
@@ -12,7 +12,7 @@
                   :items=maps
                   @update:modelValue="toggleThemeInternal"
         >
-          <template #selection="{ item }" >
+          <template #selection="{ item }">
             <span class="text-h6 text-sm-h3 text-primary"> {{ item.title }}</span>
           </template>
           <template #item="{ item, props }">
@@ -73,6 +73,11 @@
         <v-btn class="mr-1" @click="store.clearAll()">
           Clear All
         </v-btn>
+        <div v-if="loading">{{ loadingText }}</div>
+        <div v-else>
+          <v-btn class="mr-1" @click="takeScreenshot()">Take Screenshot</v-btn>
+        </div>
+
       </v-col>
     </v-row>
   </v-container>
@@ -110,11 +115,14 @@ const toggleThemeInternal = () => {
 <script>
 import SlotRow from "@/components/SlotRow.vue";
 import {toggleTheme} from "@/functions/theme";
+import html2canvas from "html2canvas";
 
 export default {
   components: {SlotRow},
   data() {
     return {
+      loading: false,
+      loadingText: "",
       libraryCards: [],
       showTooltip: null,
       battlefieldEffects: [],
@@ -200,6 +208,57 @@ export default {
       setTimeout(() => {
         this.showTooltip = null;
       }, 2000);
+    },
+    takeScreenshot() {
+      this.loading = true
+      this.loadingText = "Loading..."
+      const elementToCapture = document.getElementById('app');
+      const mainWorkingArea = document.getElementById('main-working-area');
+      html2canvas(elementToCapture, {
+        // without taking height of main working area it will copy entire page
+        // if take screenshot of main-working-area it will be without theme
+        height: mainWorkingArea.offsetHeight,
+      }).then((canvas) => {
+        canvas.toBlob((blob) => {
+          // Check if ClipboardItem is supported
+          if (navigator.clipboard && navigator.clipboard.write) {
+            const item = new ClipboardItem({'image/png': blob});
+            navigator.clipboard.write([item]).then(() => {
+              this.loadingText = 'Done'
+              setTimeout(() => {
+                this.loading = false
+              }, 2000);
+            }).catch((err) => {
+
+              this.loadingText = 'Failed. Try again or different browser'
+              setTimeout(() => {
+                this.loading = false
+              }, 3000);
+              console.error('Unable to copy canvas to clipboard:', err);
+            });
+          } else {
+            // Fallback for browsers that don't support ClipboardItem
+            const dataUrl = canvas.toDataURL('image/png');
+            const textArea = document.createElement('textarea');
+            textArea.value = dataUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            this.loadingText = 'Done. CTRL+V into browser\'s address bar or use Chrome for better experience'
+            setTimeout(() => {
+              this.loading = false
+            }, 3000);
+          }
+        }, 'image/png');
+      }).catch((error) => {
+        this.loadingText = 'Failed. Try again or different browser'
+        setTimeout(() => {
+          this.loading = false
+        }, 3000);
+        console.error('Error capturing screenshot:', error);
+      });
+
     }
   },
   created() {
