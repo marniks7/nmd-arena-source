@@ -1,7 +1,8 @@
 import {defineStore} from 'pinia'
-
+import {v4} from 'uuid';
 
 let initialState = {
+    id: v4(),
     map: null,
     battlefieldEffect: null,
     items: [{
@@ -16,8 +17,25 @@ let initialState = {
             {id: 5, cards: [], label_not_selected: 'Passive'},
         ]
     }],
-    count: 1
+    count: 1,
 };
+
+export const useSlotsSaved = defineStore('slotsSaved', {
+    state: () => ({
+        items: []
+    }),
+    persist: true,
+})
+
+function isSame(savedElement) {
+    const slotsStore = useSlotsStore();
+    console.log("saved-" + savedElement.map + "vs" + slotsStore.map + "-saved-" + savedElement.battlefieldEffect + "vs" + slotsStore.battlefieldEffect)
+    return (savedElement.map === slotsStore.map
+            || (slotsStore.map == null && savedElement.map === null))
+        && (savedElement.battlefieldEffect === slotsStore.battlefieldEffect
+            || (slotsStore.battlefieldEffect === null && savedElement.battlefieldEffect === null));
+}
+
 export const useSlotsStore = defineStore('slots', {
     state: () => ({...initialState}),
     // could also be defined as
@@ -57,6 +75,43 @@ export const useSlotsStore = defineStore('slots', {
         },
         clearAll() {
             Object.assign(this, initialState);
+        },
+        saveCards() {
+            const savedStore = useSlotsSaved()
+            let isUpdate = false
+            let index = -1
+            savedStore.items.some((savedElement, i) => {
+                if (savedElement.id === this.$state.id) {
+                    isUpdate = isSame(savedElement);
+                    index = i
+                    return true
+                }
+            })
+
+            let copiedObject = JSON.parse(JSON.stringify(this.$state));
+
+            if (isUpdate) {
+                savedStore.items.splice(index, 1, copiedObject);
+            } else {
+                copiedObject.id = v4()
+                this.$state.id = copiedObject.id
+                savedStore.items.push(copiedObject)
+            }
+
+        },
+        removeSaved() {
+            const savedStore = useSlotsSaved()
+            savedStore.items = savedStore.items.filter(item => item.id === this.id);
+        },
+        loadCards() {
+            const savedStore = useSlotsSaved()
+            for (const savedElement of savedStore.items) {
+                if (isSame(savedElement)) {
+                    let copiedObject = JSON.parse(JSON.stringify(savedElement));
+                    Object.assign(this, copiedObject);
+                    break
+                }
+            }
         },
         addCard(card) {
             if (card.passive) {
@@ -98,6 +153,5 @@ export const useSlotsStore = defineStore('slots', {
             this.items[0].slots[0].cards.push(card)
 
         }
-    },
-    persist: true,
+    }
 })

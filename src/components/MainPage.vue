@@ -10,7 +10,7 @@
                   base-color="background"
                   class="child-sm-p-1"
                   :items=maps
-                  @update:modelValue="toggleThemeInternal"
+                  @update:modelValue="onMapSelected"
         >
           <template #selection="{ item }">
             <span class="text-h6 text-sm-h3 text-primary"> {{ item.title }}</span>
@@ -69,7 +69,7 @@
         </v-btn>
         <v-dialog width="auto">
           <template v-slot:activator="{ props }">
-            <v-btn  class="mr-1" v-bind="props" text="Remove last row"> </v-btn>
+            <v-btn class="mr-1" v-bind="props" text="Remove last row"></v-btn>
           </template>
 
           <template v-slot:default="{ isActive }">
@@ -94,11 +94,14 @@
 
         <v-dialog width="auto">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-1" v-bind="props" text="Clear Cards"> </v-btn>
+            <v-btn class="mr-1" v-bind="props" text="Clear Cards"></v-btn>
           </template>
 
           <template v-slot:default="{ isActive }">
             <v-card>
+              <v-card-text>
+                Cards will be cleared from current working area. Saved cards are not affected
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
 
@@ -118,16 +121,18 @@
         </v-dialog>
         <v-dialog width="auto">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-1" v-bind="props" text="Clear All"> </v-btn>
+            <v-btn class="mr-1" v-bind="props" text="Start from the scratch"></v-btn>
           </template>
 
           <template v-slot:default="{ isActive }">
             <v-card>
+              <v-card-text>
+                Clear working area: cards, as well as map, battlefield effect, etc. Saved options will not be affected
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-
                 <v-btn
-                    text="Confirm clear all"
+                    text="Confirm start from the scratch"
                     color="primary"
                     @click="isActive.value = false; store.clearAll()"
                 />
@@ -142,10 +147,79 @@
         </v-dialog>
         <span v-if="loading">{{ loadingText }}</span>
         <v-btn v-else class="mr-1" @click="takeScreenshot()">Take Screenshot</v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-dialog width="auto">
+          <template v-slot:activator="{ props }">
+            <v-btn class="mr-1" v-bind="props" text="Save"></v-btn>
+          </template>
 
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-text>
+                Save working area in the browser cache for map:
+                <p class="d-inline font-weight-bold">{{ store.map }}</p>
+                <p class="d-inline" v-if="store.battlefieldEffect"> and battlefield effect:</p>
+                <p class="d-inline font-weight-bold" v-if="store.battlefieldEffect">{{ store.battlefieldEffect }}</p>
+                <p>
+                  Next time whenever you choose map and battlefield effect - the cards and roles will be loaded.
+                </p>
+                <p>
+                </p>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    text="Confirm save"
+                    color="primary"
+                    @click="isActive.value = false; store.saveCards()"
+                />
+                <v-btn
+                    text="Cancel"
+                    color="secondary"
+                    @click="isActive.value = false"
+                />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
+        <v-dialog width="auto">
+          <template v-slot:activator="{ props }">
+            <v-btn class="mr-1" v-bind="props" text="Remove saved"></v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card>
+              <v-card-text>
+                Remove saved option if exists for map:
+                <p class="d-inline font-weight-bold">{{ store.map }}</p>
+                <p class="d-inline" v-if="store.battlefieldEffect"> and battlefield effect:</p>
+                <p class="d-inline font-weight-bold" v-if="store.battlefieldEffect">{{ store.battlefieldEffect }}</p>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+
+                <v-btn
+                    text="Confirm remove saved"
+                    color="primary"
+                    @click="isActive.value = false; store.removeSaved()"/>
+
+                <v-btn
+                    text="Cancel"
+                    color="secondary"
+                    @click="isActive.value = false"
+                />
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
+
   <v-container fluid>
     <v-row no-gutters>
       <v-col
@@ -165,16 +239,51 @@
 </template>
 
 <script setup>
+import {openModal} from '@kolirt/vue-modal'
+
+// const props = defineProps({
+//   test: {}
+// })
 import {useSlotsStore} from '@/stores/slots'
 import {useTheme} from "vuetify";
 import {toggleTheme} from "@/functions/theme";
+import {defineAsyncComponent} from "vue";
+import {notify} from "@kyvg/vue3-notification";
 
 const theme = useTheme();
 // access the `store` variable anywhere in the component ✨
 const store = useSlotsStore()
 const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard', 'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous']
-const toggleThemeInternal = () => {
+const onMapSelected = () => {
   toggleTheme(theme)
+  store.loadCards()
+}
+
+function runModal1() {
+  openModal(
+      defineAsyncComponent(() => import('@/components/MyModal.vue')),
+      {
+        test: 'modal1'
+      },
+      {
+        modalStyle: {
+          align: 'top'
+        }
+      }
+  )
+      .then((data) => {
+        notify({
+          type: 'success',
+          title: 'Success modal1',
+          text: JSON.stringify(data)
+        })
+      })
+      .catch(() => {
+        notify({
+          type: 'error',
+          title: 'Error modal1'
+        })
+      })
 }
 </script>
 <script>
@@ -296,7 +405,7 @@ export default {
               }, 2000);
             }).catch((err) => {
 
-              this.loadingText = 'Failed. Try again or different browser'
+              this.loadingText = 'Failed. If mobile browser - it is not supported. Use PC - Chrome browser provides best experience'
               setTimeout(() => {
                 this.loading = false
               }, 3000);
@@ -318,7 +427,7 @@ export default {
           }
         }, 'image/png');
       }).catch((error) => {
-        this.loadingText = 'Failed. Try again or different browser'
+        this.loadingText = 'Failed. If mobile browser - it is not supported. Use PC - Chrome browser provides best experience'
         setTimeout(() => {
           this.loading = false
         }, 3000);
