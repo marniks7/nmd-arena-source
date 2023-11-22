@@ -1,5 +1,5 @@
 <template xmlns="http://www.w3.org/1999/html">
-  <v-container id="main-working-area">
+  <v-container id="main-workspace">
     <v-row no-gutters justify-sm="space-between">
       <v-col align-self="start" cols="auto">
         <v-select label="Map"
@@ -100,7 +100,7 @@
           <template v-slot:default="{ isActive }">
             <v-card>
               <v-card-text>
-                Cards will be cleared from current working area. Saved cards are not affected
+                Cards will be cleared from current workspace. Saved cards are not affected
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -127,7 +127,7 @@
           <template v-slot:default="{ isActive }">
             <v-card>
               <v-card-text>
-                Clear working area: cards, as well as map, battlefield effect, etc. Saved options will not be affected
+                Clear workspace: cards, as well as map, battlefield effect, etc. Saved options will not be affected
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -159,7 +159,7 @@
           <template v-slot:default="{ isActive }">
             <v-card>
               <v-card-text>
-                Save working area in the browser cache for map:
+                Save workspace in the browser cache for map:
                 <p class="d-inline font-weight-bold">{{ store.map }}</p>
                 <p class="d-inline" v-if="store.battlefieldEffect"> and battlefield effect:</p>
                 <p class="d-inline font-weight-bold" v-if="store.battlefieldEffect">{{ store.battlefieldEffect }}</p>
@@ -361,11 +361,11 @@ export default {
       this.loading = true
       this.loadingText = "Loading..."
       const elementToCapture = document.getElementById('app');
-      const mainWorkingArea = document.getElementById('main-working-area');
+      const mainWorkspace = document.getElementById('main-workspace');
       html2canvas(elementToCapture, {
-        // without taking height of main working area it will copy entire page
-        // if take screenshot of main-working-area it will be without theme
-        height: mainWorkingArea.offsetHeight,
+        // Without taking height of main workspace  it will copy entire page
+        // if I take screenshot of main-workspace it will be without theme
+        height: mainWorkspace.offsetHeight,
       }).then((canvas) => {
         canvas.toBlob((blob) => {
           // Check if ClipboardItem is supported
