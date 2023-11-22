@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {RouterView} from 'vue-router'
-import {ModalTarget} from "@kolirt/vue-modal";
 </script>
 
 <template>

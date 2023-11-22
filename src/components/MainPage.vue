@@ -239,7 +239,6 @@
 </template>
 
 <script setup>
-import {openModal} from '@kolirt/vue-modal'
 
 // const props = defineProps({
 //   test: {}
@@ -247,43 +246,17 @@ import {openModal} from '@kolirt/vue-modal'
 import {useSlotsStore} from '@/stores/slots'
 import {useTheme} from "vuetify";
 import {toggleTheme} from "@/functions/theme";
-import {defineAsyncComponent} from "vue";
-import {notify} from "@kyvg/vue3-notification";
 
 const theme = useTheme();
 // access the `store` variable anywhere in the component ✨
 const store = useSlotsStore()
-const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard', 'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous']
+const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard',
+  'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous',
+  'Ablaze Cave. Nightmare', 'Samurai Castle. Nightmare', 'Sakura Valley. Nightmare',
+  'Sword Tomb. Unrivaled', 'Abandoned Tunnel. Unrivaled', 'Stone Cavern. Unrivaled']
 const onMapSelected = () => {
   toggleTheme(theme)
   store.loadCards()
-}
-
-function runModal1() {
-  openModal(
-      defineAsyncComponent(() => import('@/components/MyModal.vue')),
-      {
-        test: 'modal1'
-      },
-      {
-        modalStyle: {
-          align: 'top'
-        }
-      }
-  )
-      .then((data) => {
-        notify({
-          type: 'success',
-          title: 'Success modal1',
-          text: JSON.stringify(data)
-        })
-      })
-      .catch(() => {
-        notify({
-          type: 'error',
-          title: 'Error modal1'
-        })
-      })
 }
 </script>
 <script>
