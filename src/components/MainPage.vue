@@ -387,13 +387,20 @@ export default {
           } else {
             // Fallback for browsers that don't support ClipboardItem
             const dataUrl = canvas.toDataURL('image/png');
-            const textArea = document.createElement('textarea');
-            textArea.value = dataUrl;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            this.loadingText = 'Done. CTRL+V into browser\'s address bar or use Chrome for better experience'
+            // Copy to clipboard (but as text, so required to CTRL + V into address bar)
+            // const textArea = document.createElement('textarea');
+            // textArea.value = dataUrl;
+            // document.body.appendChild(textArea);
+            // textArea.select();
+            // document.execCommand('copy');
+            // document.body.removeChild(textArea);
+            // this.loadingText = 'Done. CTRL+V into browser\'s address bar or use Chrome for better experience'
+            // Convert the canvas to an image (e.g., PNG)
+            const image = dataUrl;
+
+            // Open the image in a new tab (you can modify this to save the image)
+            const screenshotWindow = window.open();
+            screenshotWindow.document.write('<img alt="Workspace area" src="' + image + '" width="' + canvas.width + '" height="' + canvas.height + '" />');
             setTimeout(() => {
               this.loading = false
             }, 3000);
