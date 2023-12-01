@@ -7,7 +7,7 @@ let initialState = {
     battlefieldEffect: null,
     items: [{
         id: 1,
-        role: null,
+        role: "Choose role",
         roleOption: "",
         slots: [
             {id: 1, cards: [], label_not_selected: 'Empty slot'},
@@ -17,7 +17,6 @@ let initialState = {
             {id: 5, cards: [], label_not_selected: 'Passive'},
         ]
     }],
-    count: 1,
 };
 
 export const useSlotsSaved = defineStore('slotsSaved', {
@@ -47,9 +46,8 @@ export const useSlotsStore = defineStore('slots', {
             slot.cards.push(card)
         },
         addNewRow() {
-            this.count = this.count + 1
             this.items.push({
-                id: this.count,
+                id: v4(),
                 role: null,
                 roleOption: "",
                 slots: [
@@ -61,10 +59,50 @@ export const useSlotsStore = defineStore('slots', {
                 ]
             })
         },
-        removeRow() {
-            this.items.splice(this.items.length - 1, this.items.length)
-            this.count = this.count - 1
+        removeRow(itemId) {
+            let index = -1
 
+            this.items.some((savedElement, i) => {
+                if (savedElement.id === itemId) {
+                    index = i
+                    return true
+                }
+            })
+            if (index !== -1) {
+                this.items.splice(index, 1)
+                this.items.splice(index + 1, 0, element);
+            }
+
+        },
+        moveUp(itemId) {
+            let index = -1
+            let elementToMove = undefined
+            this.items.some((savedElement, i) => {
+                if (savedElement.id === itemId) {
+                    index = i
+                    elementToMove = savedElement
+                    return true
+                }
+            })
+            if (index !== -1 && index > 0 && index < this.items.length) {
+                this.items.splice(index, 1)
+                this.items.splice(index - 1, 0, elementToMove);
+            }
+        },
+        moveDown(itemId) {
+            let index = -1
+            let elementToMove = undefined
+            this.items.some((savedElement, i) => {
+                if (savedElement.id === itemId) {
+                    index = i
+                    elementToMove = savedElement
+                    return true
+                }
+            })
+            if (index !== -1 && index >= 0 && index < this.items.length - 1) {
+                this.items.splice(index, 1)
+                this.items.splice(index + 1, 0, elementToMove);
+            }
         },
         clearCards() {
             for (const currentItem of this.items) {

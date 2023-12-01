@@ -1,7 +1,7 @@
 <template xmlns="http://www.w3.org/1999/html">
   <v-container id="main-workspace">
     <v-row no-gutters justify-sm="space-between">
-      <v-col align-self="start" cols="auto">
+      <v-col align-self="start">
         <v-select label="Map"
                   v-model="store.map"
                   density="compact"
@@ -10,6 +10,7 @@
                   base-color="background"
                   class="child-sm-p-1"
                   :items=maps
+                  menu-icon=""
                   @update:modelValue="onMapSelected"
         >
           <template #selection="{ item }">
@@ -25,7 +26,7 @@
         </v-select>
 
       </v-col>
-      <v-col align-self="end" cols="2">
+      <v-col align-self="end" cols="auto">
         <v-select label="Battlefield effect"
                   v-model="store.battlefieldEffect"
                   density="compact"
@@ -33,9 +34,10 @@
                   bg-color="undefined"
                   class="child-sm-p-1"
                   base-color="background"
+                  menu-icon=""
                   :items="battlefieldEffects"
         >
-          <template v-slot:selection="{ item }">
+          <template v-slot:selection="{ item }" >
             <div class="d-flex align-center">
               <v-img class="scale mr-1" :src="item.raw.image"/>
               <span class="text-caption text-sm-h6 text-secondary">  {{ item.title }}</span>
@@ -54,7 +56,7 @@
         </v-select>
       </v-col>
     </v-row>
-    <v-row no-gutters v-for="item in store.items" :key="item.id">
+    <v-row no-gutters v-for="item in store.items" :key="item.id" >
       <v-col>
         <SlotRow v-bind:slt="item"/>
       </v-col>
@@ -67,31 +69,6 @@
         <v-btn class="mr-1" @click="store.addNewRow()">
           Add one more row
         </v-btn>
-        <v-dialog width="auto">
-          <template v-slot:activator="{ props }">
-            <v-btn class="mr-1" v-bind="props" text="Remove last row"></v-btn>
-          </template>
-
-          <template v-slot:default="{ isActive }">
-            <v-card>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-
-                <v-btn
-                    text="Confirm remove last row"
-                    color="primary"
-                    @click="isActive.value = false; store.removeRow();"
-                />
-                <v-btn
-                    text="Cancel"
-                    color="secondary"
-                    @click="isActive.value = false"
-                />
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
-
         <v-dialog width="auto">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-1" v-bind="props" text="Clear Cards"></v-btn>
