@@ -98,7 +98,7 @@
         </v-dialog>
         <v-dialog width="auto">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-1" v-bind="props" text="Start from the scratch"></v-btn>
+            <v-btn class="mr-1" v-bind="props" text="Start from scratch"></v-btn>
           </template>
 
           <template v-slot:default="{ isActive }">
@@ -109,7 +109,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                    text="Confirm start from the scratch"
+                    text="Confirm start from scratch"
                     color="primary"
                     @click="isActive.value = false; store.clearAll()"
                 />
