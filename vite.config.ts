@@ -5,6 +5,15 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // build: {
+  //   rollupOptions: {
+  //     // https://rollupjs.org/configuration-options/
+  //     output: {
+  //
+  //       sourcemap: 'inline'
+  //     }
+  //   },
+  // },
   plugins: [
     vue({
     }),

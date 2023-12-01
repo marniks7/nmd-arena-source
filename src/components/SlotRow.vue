@@ -10,12 +10,12 @@
         <option>Master of Fish</option>
         <option>Support</option>
       </select>
-        <select v-model="slt.roleOption" class="text-caption text-sm-h6 text-secondary" >
-          <option></option>
-          <option>Option1</option>
-          <option>Option2</option>
-          <option>Option3</option>
-        </select>
+      <select v-model="slt.roleOption" class="text-caption text-sm-h6 text-secondary">
+        <option></option>
+        <option>Option1</option>
+        <option>Option2</option>
+        <option>Option3</option>
+      </select>
       <v-menu max-width="200">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -87,9 +87,9 @@
                  draggable="true"/>
         </div>
         <div class="text-center">
-          <span v-if="this.$vuetify.display.mobile"
+          <span v-if="display.mobile"
                 class="text-lg-h5 text-caption text-info truncated-text">{{ slot.labelSmall }}</span>
-          <span v-else-if="!this.$vuetify.display.mobile"
+          <span v-else-if="!display.mobile"
                 class="text-lg-h5 text-caption text-info truncated-text">{{ slot.label }}</span>
         </div>
       </div>
@@ -105,8 +105,12 @@
 
 <script setup>
 import {useSlotsStore} from "@/stores/slots";
+import {useDisplay} from 'vuetify'
+import {ref} from "vue";
 
 const store = useSlotsStore()
+
+const display = ref(useDisplay())
 </script>
 <script>
 export default {
