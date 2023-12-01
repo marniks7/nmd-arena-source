@@ -8,6 +8,7 @@
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
+                  variant="underlined"
                   class="child-sm-p-1"
                   :items=maps
                   menu-icon=""
@@ -27,27 +28,36 @@
 
       </v-col>
       <v-col align-self="end" cols="auto">
-        <v-select label="Battlefield effect"
-                  v-model="store.battlefieldEffect"
+        <v-select v-model="store.battlefieldEffect"
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
-                  class="child-sm-p-1"
+                  class="ma-0 pa-0 child-sm-p-1"
                   base-color="background"
                   menu-icon=""
+                  single-line
                   :items="battlefieldEffects"
         >
-          <template v-slot:selection="{ item }" >
-            <div class="d-flex align-center">
-              <v-img class="scale mr-1" :src="item.raw.image"/>
-              <span class="text-caption text-sm-h6 text-secondary">  {{ item.title }}</span>
+          <template v-slot:selection="{ item }">
+            <div class="d-inline-flex align-center v-list--density-compact">
+<!--              <v-img class="scale mr-1" :src="item.raw.image"/>-->
+              <v-img class="scale mr-1" :src="item.raw.image">
+                <template #sources>
+                  <source :srcset="item.raw.image">
+                </template>
+              </v-img>
+              <span class="text-sm-h6 text-secondary">  {{ item.title }}</span>
             </div>
           </template>
           <template v-slot:item=" { item, props }">
             <v-list-item v-bind="props" color="secondary" :prepend-avatar="item.image">
               <template v-slot:prepend>
-                <div class="d-flex align-center">
-                  <v-img class="scale mr-1" :src="item.raw.image"/>
+                <div class="d-inline-flex align-center v-list--density-compact">
+                  <v-img class="scale mr-1" :src="item.raw.image">
+                    <template #sources>
+                      <source :srcset="item.raw.image">
+                    </template>
+                  </v-img>
                 </div>
               </template>
 
@@ -55,8 +65,18 @@
           </template>
         </v-select>
       </v-col>
+      <!--      <v-col align-self="end" cols="1">-->
+      <!--        <v-text-field-->
+      <!--            density="compact"-->
+      <!--            hide-details-->
+      <!--            single-line-->
+      <!--            bg-color="undefined"-->
+      <!--            base-color="background"-->
+      <!--            class="ma-0 pa-0"-->
+      <!--        ></v-text-field>-->
+      <!--      </v-col>-->
     </v-row>
-    <v-row no-gutters v-for="item in store.items" :key="item.id" >
+    <v-row no-gutters v-for="item in store.items" :key="item.id">
       <v-col>
         <SlotRow v-bind:slt="item"/>
       </v-col>
@@ -208,7 +228,11 @@
           draggable="true"
           class="gallery-image"
       >
-        <v-img :src="card.image"/>
+        <v-img :src="card.image">
+          <template #sources>
+            <source :srcset="card.image">
+          </template>
+        </v-img>
         <div v-if="showTooltip === card.id" class="tooltip">Added to slot</div>
       </v-col>
     </v-row>
@@ -235,6 +259,48 @@ const onMapSelected = () => {
   toggleTheme(theme)
   store.loadCards()
 }
+const libraryCards2 = []
+const passiveCardImages = import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+  query: {w: "200;300;400", format: "webp", as: "srcset"},
+  eager: true
+})
+
+for (let passiveCardImage of Object.values(passiveCardImages)) {
+  // const import_statment = passiveCardImage()
+  const image = (passiveCardImage).default
+  const cardName = 'test' //url.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+  libraryCards2.push({
+    image,
+    passive: true,
+    text: cardName,
+    id: cardName
+  });
+}
+const a = 0
+
+const battlefieldEffectImages =  Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+  eager: true,
+  query: {w: "10;20;30", as: "srcset", format: 'webp'}
+}))
+
+const battlefieldEffects = []
+battlefieldEffects.push({
+  title: '',
+})
+battlefieldEffectImages.forEach((imageValue) => {
+      const image = imageValue.default
+      let name = image.split('/').pop().replace(/\.\w+$/, '');
+      const dashIndex = name.lastIndexOf('-');
+
+      if (dashIndex !== -1) {
+        name = name.substring(0, dashIndex);
+      }
+      battlefieldEffects.push({
+        image,
+        title: name,
+      })
+    }
+)
 </script>
 <script>
 import SlotRow from "@/components/SlotRow.vue";
@@ -250,43 +316,20 @@ export default {
       loadingText: "",
       libraryCards: [],
       showTooltip: null,
-      battlefieldEffects: [],
     };
   },
   methods: {
     loadCardImages() {
-      const battlefieldEffects = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
-        eager: true,
-        as: 'url'
-      }))
-
-      this.battlefieldEffects.push({
-        title: '',
-      })
-      battlefieldEffects.forEach((imagePath) => {
-            const image = new URL(imagePath, import.meta.url).href;
-            let name = imagePath.split('/').pop().replace(/\.\w+$/, '');
-            const dashIndex = name.lastIndexOf('-');
-
-            if (dashIndex !== -1) {
-              name = name.substring(0, dashIndex);
-            }
-            this.battlefieldEffects.push({
-              image,
-              title: name,
-            })
-          }
-      )
-
       const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
-        as: 'url'
+        query: {w: "200;300;400;800", as: "srcset", format: 'webp'}
       }))
-      passiveCardImages.forEach((imagePath) => {
-        const image = new URL(imagePath, import.meta.url).href;
-        const cardName = imagePath.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+      passiveCardImages.forEach((imageValue) => {
+        const image = imageValue.default;
+        //const image = new URL(imagePath, import.meta.url).href;
+        const cardName = image.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
         this.libraryCards.push({
-          image,
+          image: image,
           passive: true,
           text: cardName,
           id: cardName
@@ -294,13 +337,14 @@ export default {
       });
       const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
-        as: 'url'
+        query: {w: "200;300;400", as: "srcset",format: 'webp'}
       }))
-      cardImages.forEach((imagePath) => {
-        const image = new URL(imagePath, import.meta.url).href;
+      cardImages.forEach((imageValue) => {
+        const imagePath = imageValue.default;
+        //const image = new URL(imagePath, import.meta.url).href;
         const cardName = imagePath.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
         this.libraryCards.push({
-          image,
+          image: imagePath,
           passive: false,
           text: cardName,
           id: cardName

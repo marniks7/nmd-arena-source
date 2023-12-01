@@ -80,11 +80,14 @@
     >
       <div v-if="slot.cards.length > 0">
         <div v-for="(card, index) in slot.cards" :key="index">
-          <v-img :src="card.image"
-                 @dragstart="startDrag(card, slot, $event)"
+          <v-img :src="card.image"  @dragstart="startDrag(card, slot, $event)"
                  @dragend="endDrag(card, slot, $event)"
                  @click="removeCard(card, slot, $event)"
-                 draggable="true"/>
+                 draggable="true">
+            <template #sources>
+              <source :srcset="card.image">
+            </template>
+          </v-img>
         </div>
         <div class="text-center">
           <span v-if="this.$vuetify.display.mobile"
