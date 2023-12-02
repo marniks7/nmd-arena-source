@@ -48,7 +48,7 @@ export const useSlotsStore = defineStore('slots', {
         addNewRow() {
             this.items.push({
                 id: v4(),
-                role: null,
+                role: "Choose role",
                 roleOption: "",
                 slots: [
                     {id: 1, cards: [], label_not_selected: 'Empty slot'},
