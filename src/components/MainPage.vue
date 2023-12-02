@@ -255,7 +255,7 @@ export default {
   },
   methods: {
     loadCardImages() {
-      const battlefieldEffects = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+      const battlefieldEffects = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
         eager: true,
         as: 'url'
       }))
@@ -278,7 +278,7 @@ export default {
           }
       )
 
-      const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+      const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
         eager: true,
         as: 'url'
       }))
@@ -292,7 +292,7 @@ export default {
           id: cardName
         });
       });
-      const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+      const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
         eager: true,
         as: 'url'
       }))

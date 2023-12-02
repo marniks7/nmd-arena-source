@@ -5,6 +5,6 @@ import {RouterView} from 'vue-router'
 <template>
   <v-app>
     <RouterView/>
-    <v-footer>Developed by ᶜᴸ❁Nick. Content: Lanney</v-footer>
+    <v-footer>Developed by ᶜᴸ❁Nick. Content: Lanney. Last cards update: 2023 Dec 1st</v-footer>
   </v-app>
 </template>
