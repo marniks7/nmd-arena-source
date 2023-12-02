@@ -310,7 +310,7 @@ export default {
 
       const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
         eager: true,
-        query: {w: "100;200;300;400;800", as: "srcset", format: 'webp'}
+        query: {w: "100;200;300;400", as: "srcset", format: 'webp'}
       }))
 
       const passiveCardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
@@ -331,7 +331,7 @@ export default {
       });
       const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
         eager: true,
-        query: {w: "100;200;300;400;800", as: "srcset", format: 'webp'}
+        query: {w: "100;200;300;400", as: "srcset", format: 'webp'}
       }))
 
       const cardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
