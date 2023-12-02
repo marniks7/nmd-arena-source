@@ -80,7 +80,7 @@
     >
       <div v-if="slot.cards.length > 0">
         <div v-for="(card, index) in slot.cards" :key="index">
-          <v-img :src="card.image"  @dragstart="startDrag(card, slot, $event)"
+          <v-img :src="card.originalImage" :alt="card.title"  @dragstart="startDrag(card, slot, $event)"
                  @dragend="endDrag(card, slot, $event)"
                  @click="removeCard(card, slot, $event)"
                  draggable="true">

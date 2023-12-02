@@ -40,8 +40,7 @@
         >
           <template v-slot:selection="{ item }">
             <div class="d-inline-flex align-center v-list--density-compact">
-<!--              <v-img class="scale mr-1" :src="item.raw.image"/>-->
-              <v-img class="scale mr-1" :src="item.raw.image">
+              <v-img class="scale mr-1" :src="item.raw.originalImage">
                 <template #sources>
                   <source :srcset="item.raw.image">
                 </template>
@@ -228,7 +227,7 @@
           draggable="true"
           class="gallery-image"
       >
-        <v-img :src="card.image">
+        <v-img :src="card.originalImage" :alt="card.title">
           <template #sources>
             <source :srcset="card.image">
           </template>
@@ -259,48 +258,6 @@ const onMapSelected = () => {
   toggleTheme(theme)
   store.loadCards()
 }
-const libraryCards2 = []
-const passiveCardImages = import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
-  query: {w: "200;300;400", format: "webp", as: "srcset"},
-  eager: true
-})
-
-for (let passiveCardImage of Object.values(passiveCardImages)) {
-  // const import_statment = passiveCardImage()
-  const image = (passiveCardImage).default
-  const cardName = 'test' //url.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
-  libraryCards2.push({
-    image,
-    passive: true,
-    text: cardName,
-    id: cardName
-  });
-}
-const a = 0
-
-const battlefieldEffectImages =  Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
-  eager: true,
-  query: {w: "10;20;30", as: "srcset", format: 'webp'}
-}))
-
-const battlefieldEffects = []
-battlefieldEffects.push({
-  title: '',
-})
-battlefieldEffectImages.forEach((imageValue) => {
-      const image = imageValue.default
-      let name = image.split('/').pop().replace(/\.\w+$/, '');
-      const dashIndex = name.lastIndexOf('-');
-
-      if (dashIndex !== -1) {
-        name = name.substring(0, dashIndex);
-      }
-      battlefieldEffects.push({
-        image,
-        title: name,
-      })
-    }
-)
 </script>
 <script>
 import SlotRow from "@/components/SlotRow.vue";
@@ -315,38 +272,80 @@ export default {
       loading: false,
       loadingText: "",
       libraryCards: [],
+      battlefieldEffects: [],
       showTooltip: null,
     };
   },
   methods: {
     loadCardImages() {
+      const battlefieldEffectImages = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+        eager: true,
+        query: {w: "10;20;30", as: "srcset", format: 'webp'}
+      }))
+
+      const battlefieldEffectImagesOriginal = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+        eager: true,
+      }))
+
+      this.battlefieldEffects.push({
+        title: '',
+      })
+      battlefieldEffectImages.forEach((imageValue, index) => {
+            const originalName = battlefieldEffectImagesOriginal[index].default;
+            const originalImageURL = new URL(originalName, import.meta.url).href;
+            const image = imageValue.default
+            let name = originalName.split('/').pop().replace(/\.\w+$/, '');
+            const dashIndex = name.lastIndexOf('-');
+
+            if (dashIndex !== -1) {
+              name = name.substring(0, dashIndex);
+            }
+            this.battlefieldEffects.push({
+              image,
+              originalImage: originalImageURL,
+              title: name,
+            })
+          }
+      )
       const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
-        query: {w: "200;300;400;800", as: "srcset", format: 'webp'}
+        query: {w: "100;200;300;400;800", as: "srcset", format: 'webp'}
       }))
-      passiveCardImages.forEach((imageValue) => {
+
+      const passiveCardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+        eager: true,
+      }))
+      passiveCardImages.forEach((imageValue, index) => {
+        const originalName = passiveCardImagesOriginal[index].default
+        const originalImageURL = new URL(originalName, import.meta.url).href;
         const image = imageValue.default;
-        //const image = new URL(imagePath, import.meta.url).href;
-        const cardName = image.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+        const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
         this.libraryCards.push({
           image: image,
+          originalImage: originalImageURL,
           passive: true,
-          text: cardName,
+          title: cardName,
           id: cardName
         });
       });
       const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
         eager: true,
-        query: {w: "200;300;400", as: "srcset",format: 'webp'}
+        query: {w: "100;200;300;400;800", as: "srcset", format: 'webp'}
       }))
-      cardImages.forEach((imageValue) => {
+
+      const cardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,JPG,PNG,JPEG}', {
+        eager: true,
+      }))
+      cardImages.forEach((imageValue, index) => {
+        const originalName = cardImagesOriginal[index].default
+        const originalImageURL = new URL(originalName, import.meta.url).href;
         const imagePath = imageValue.default;
-        //const image = new URL(imagePath, import.meta.url).href;
-        const cardName = imagePath.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+        const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
         this.libraryCards.push({
           image: imagePath,
+          originalImage: originalImageURL,
           passive: false,
-          text: cardName,
+          title: cardName,
           id: cardName
         });
       });
