@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import {useSlotsStore} from "@/stores/slots";
+import {useSlotsStore} from "@/stores/slots.ts";
 import {useDisplay} from 'vuetify'
 import {ref} from "vue";
 

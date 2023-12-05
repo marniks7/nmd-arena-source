@@ -1,4 +1,4 @@
-import {useSlotsStore} from '@/stores/slots'
+import {useSlotsStore} from '@/stores/slots.ts'
 
 
 export function toggleTheme(theme) {

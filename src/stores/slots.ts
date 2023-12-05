@@ -1,22 +1,23 @@
 import {defineStore} from 'pinia'
 import {v4} from 'uuid';
 
-let initialState = {
+const initialRow = {
+    id: v4(),
+    role: "Choose role",
+    roleOption: "",
+    slots: [
+        {id: 1, cards: [], label_not_selected: 'Empty slot'},
+        {id: 2, cards: [], label_not_selected: 'Empty slot'},
+        {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss', labelSmall: '1st boss'},
+        {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss', labelSmall: '2nd'},
+        {id: 5, cards: [], label_not_selected: 'Passive'},
+    ]
+};
+const initialState = {
     id: v4(),
     map: null,
     battlefieldEffect: null,
-    items: [{
-        id: 1,
-        role: "Choose role",
-        roleOption: "",
-        slots: [
-            {id: 1, cards: [], label_not_selected: 'Empty slot'},
-            {id: 2, cards: [], label_not_selected: 'Empty slot'},
-            {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss', labelSmall: '1st boss'},
-            {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss', labelSmall: '2nd'},
-            {id: 5, cards: [], label_not_selected: 'Passive'},
-        ]
-    }],
+    items: [JSON.parse(JSON.stringify(initialRow))],
 };
 
 export const useSlotsSaved = defineStore('slotsSaved', {
@@ -28,7 +29,6 @@ export const useSlotsSaved = defineStore('slotsSaved', {
 
 function isSame(savedElement) {
     const slotsStore = useSlotsStore();
-    console.log("saved-" + savedElement.map + "vs" + slotsStore.map + "-saved-" + savedElement.battlefieldEffect + "vs" + slotsStore.battlefieldEffect)
     return (savedElement.map === slotsStore.map
             || (slotsStore.map == null && savedElement.map === null))
         && (savedElement.battlefieldEffect === slotsStore.battlefieldEffect
@@ -46,18 +46,9 @@ export const useSlotsStore = defineStore('slots', {
             slot.cards.push(card)
         },
         addNewRow() {
-            this.items.push({
-                id: v4(),
-                role: "Choose role",
-                roleOption: "",
-                slots: [
-                    {id: 1, cards: [], label_not_selected: 'Empty slot'},
-                    {id: 2, cards: [], label_not_selected: 'Empty slot'},
-                    {id: 3, cards: [], label_not_selected: '1st boss', label: '1st boss', labelSmall: '1st boss'},
-                    {id: 4, cards: [], label_not_selected: '2nd boss', label: '2nd boss', labelSmall: '2nd'},
-                    {id: 5, cards: [], label_not_selected: 'Passive'},
-                ]
-            })
+            let copiedObject = JSON.parse(JSON.stringify(initialRow));
+            copiedObject.id = v4()
+            this.items.push(copiedObject)
         },
         removeRow(itemId) {
             let index = -1

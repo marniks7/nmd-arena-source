@@ -243,7 +243,7 @@
 // const props = defineProps({
 //   test: {}
 // })
-import {useSlotsStore} from '@/stores/slots'
+import {useSlotsStore} from '@/stores/slots.ts'
 import {useTheme} from "vuetify";
 import {toggleTheme} from "@/functions/theme";
 
