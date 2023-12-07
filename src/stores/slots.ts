@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import {v4} from 'uuid';
+import {BATTLEFIELD_INDEX, CARD_INDEX} from "@/stores/cards";
 
 const initialRow = {
     id: v4(),
@@ -25,6 +26,47 @@ export const useSlotsSaved = defineStore('slotsSaved', {
         items: []
     }),
     persist: true,
+    actions: {
+        update() {
+            for (const item of this.$state.items) {
+                let battlefieldEffect = item.battlefieldEffect;
+                if (battlefieldEffect && battlefieldEffect.id) {
+                    let battlefieldEffectData = BATTLEFIELD_INDEX.get(battlefieldEffect.id);
+                    if (battlefieldEffectData) {
+                        battlefieldEffect.image = battlefieldEffectData.image
+                        battlefieldEffect.originalImage = battlefieldEffectData.originalImage
+                        battlefieldEffect.title = battlefieldEffectData.title
+                    } else {
+                        // TODO unclear what todo in that case
+                        battlefieldEffect.image = null
+                        battlefieldEffect.originalImage = null
+                        console.error('Cannot find battlefield effect data for id:' + battlefieldEffect.id)
+                    }
+
+                }
+                for (const cardsItem of item.items) {
+                    for (const slot of cardsItem.slots) {
+                        for (const card of slot.cards) {
+                            const cardData = CARD_INDEX.get(card.id.toLowerCase());
+                            if (cardData) {
+                                card.title = cardData.title
+                                card.image = cardData.image
+                                card.originalImage = cardData.originalImage
+                            } else {
+                                card.image = null
+                                card.originalImage = null
+                                // TODO unclear what todo in that case
+                                console.error('Cannot find card data for id:' + card.id)
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        },
+
+    }
 })
 
 function isSame(savedElement) {
@@ -39,7 +81,7 @@ export const useSlotsStore = defineStore('slots', {
     state: () => ({...initialState}),
     // could also be defined as
     actions: {
-        addCardToSlot(slot, card) {
+        addCardToSlot(slot, card: Card) {
             if (!slot.cards) {
                 slot.cards = [];
             }
@@ -50,7 +92,7 @@ export const useSlotsStore = defineStore('slots', {
             copiedObject.id = v4()
             this.items.push(copiedObject)
         },
-        removeRow(itemId) {
+        removeRow(itemId: string) {
             let index = -1
 
             this.items.some((savedElement, i) => {
@@ -65,7 +107,7 @@ export const useSlotsStore = defineStore('slots', {
             }
 
         },
-        moveUp(itemId) {
+        moveUp(itemId: string) {
             let index = -1
             let elementToMove = undefined
             this.items.some((savedElement, i) => {
@@ -80,7 +122,7 @@ export const useSlotsStore = defineStore('slots', {
                 this.items.splice(index - 1, 0, elementToMove);
             }
         },
-        moveDown(itemId) {
+        moveDown(itemId: string) {
             let index = -1
             let elementToMove = undefined
             this.items.some((savedElement, i) => {

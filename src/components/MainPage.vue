@@ -36,7 +36,8 @@
                   base-color="background"
                   menu-icon=""
                   single-line
-                  :items="battlefieldEffects"
+                  :items="BATTLEFIELD_EFFECTS"
+                  @update:modelValue="onBattlefieldSelected"
         >
           <template v-slot:selection="{ item }">
             <div class="d-inline-flex align-center v-list--density-compact">
@@ -220,7 +221,7 @@
     <v-row no-gutters>
       <v-col
           cols="2"
-          v-for="card in libraryCards"
+          v-for="card in CARDS_LIBRARY"
           :key="card.id"
           @click="addCard(store, card)"
           @dragstart="startDrag(card, $event)"
@@ -243,18 +244,25 @@
 // const props = defineProps({
 //   test: {}
 // })
-import {useSlotsStore} from '@/stores/slots.ts'
+import {useSlotsSaved, useSlotsStore} from '@/stores/slots.ts'
 import {useTheme} from "vuetify";
 import {toggleTheme} from "@/functions/theme";
+import {BATTLEFIELD_EFFECTS, CARDS_LIBRARY} from "@/stores/cards.ts";
 
 const theme = useTheme();
 // access the `store` variable anywhere in the component ✨
 const store = useSlotsStore()
+const savedStore = useSlotsSaved()
+savedStore.update()
 const maps = ['Dark Prison. Hard', 'Raven Nest. Hard', 'Ablaze Cave. Hard',
   'Dark Prison. Dangerous', 'Raven Nest. Dangerous', 'Ablaze Cave. Dangerous',
   'Ablaze Cave. Nightmare', 'Samurai Castle. Nightmare', 'Sakura Valley. Nightmare',
   'Sword Tomb. Unrivaled', 'Abandoned Tunnel. Unrivaled', 'Stone Cavern. Unrivaled']
 const onMapSelected = () => {
+  toggleTheme(theme)
+  store.loadCards()
+}
+const onBattlefieldSelected = () => {
   toggleTheme(theme)
   store.loadCards()
 }
@@ -277,89 +285,6 @@ export default {
     };
   },
   methods: {
-    loadCardImages() {
-      const battlefieldEffectImages = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-        query: {w: "10;20;30", as: "srcset", format: 'webp'}
-      }))
-
-      const battlefieldEffectImagesOriginal = Object.values(import.meta.glob('@/assets/battlefieldeffects/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-      }))
-
-      this.battlefieldEffects.push({
-        title: '',
-      })
-      battlefieldEffectImages.forEach((imageValue, index) => {
-            const originalName = battlefieldEffectImagesOriginal[index].default;
-            const originalImageURL = new URL(originalName, import.meta.url).href;
-            const image = imageValue.default
-            let name = originalName.split('/').pop().replace(/\.\w+$/, '');
-            const dashIndex = name.lastIndexOf('-');
-
-            if (dashIndex !== -1) {
-              name = name.substring(0, dashIndex);
-            }
-            this.battlefieldEffects.push({
-              image,
-              originalImage: originalImageURL,
-              title: name,
-            })
-          }
-      )
-
-      const passiveCardImages = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-        query: {w: "100;200;300;400", as: "srcset", format: 'webp'}
-      }))
-
-      const passiveCardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/passive/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-      }))
-      passiveCardImages.forEach((imageValue, index) => {
-        const originalName = passiveCardImagesOriginal[index].default
-        const originalImageURL = new URL(originalName, import.meta.url).href;
-        const image = imageValue.default;
-        const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
-        this.libraryCards.push({
-          image: image,
-          originalImage: originalImageURL,
-          passive: true,
-          title: cardName,
-          id: cardName
-        });
-      });
-      const cardImages = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-        query: {w: "100;200;300;400", as: "srcset", format: 'webp'}
-      }))
-
-      const cardImagesOriginal = Object.values(import.meta.glob('@/assets/cards/*.{png,jpg,jpeg,webp,JPG,PNG,JPEG,WEBP}', {
-        eager: true,
-      }))
-      cardImages.forEach((imageValue, index) => {
-        const originalName = cardImagesOriginal[index].default
-        const originalImageURL = new URL(originalName, import.meta.url).href;
-        const imagePath = imageValue.default;
-        const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
-        this.libraryCards.push({
-          image: imagePath,
-          originalImage: originalImageURL,
-          passive: false,
-          title: cardName,
-          id: cardName
-        });
-      });
-    },
-
-    clearCards() {
-      // Logic to clear cards
-    }
-    ,
-    saveCards() {
-      // Logic to save cards
-    }
-    ,
     startDrag(card, event) {
       // Set custom data attributes for the card being dragged
       event.dataTransfer.setData('text/plain', JSON.stringify(card));
@@ -438,8 +363,6 @@ export default {
     }
   },
   created() {
-    // Call the loadCardImages method when the component is created
-    this.loadCardImages();
     // toggleTheme();
   },
 };
