@@ -30,8 +30,10 @@ export const useSlotsSaved = defineStore('slotsSaved', {
         update() {
             for (const item of this.$state.items) {
                 let battlefieldEffect = item.battlefieldEffect;
+
                 if (battlefieldEffect && battlefieldEffect.id) {
-                    let battlefieldEffectData = BATTLEFIELD_INDEX.get(battlefieldEffect.id);
+                    const id = battlefieldEffect.id
+                    let battlefieldEffectData = BATTLEFIELD_INDEX.get(id);
                     if (battlefieldEffectData) {
                         battlefieldEffect.image = battlefieldEffectData.image
                         battlefieldEffect.originalImage = battlefieldEffectData.originalImage
@@ -40,14 +42,15 @@ export const useSlotsSaved = defineStore('slotsSaved', {
                         // TODO unclear what todo in that case
                         battlefieldEffect.image = null
                         battlefieldEffect.originalImage = null
-                        console.error('Cannot find battlefield effect data for id:' + battlefieldEffect.id)
+                        console.error('Cannot find battlefield effect data for id:' + id)
                     }
 
                 }
                 for (const cardsItem of item.items) {
                     for (const slot of cardsItem.slots) {
                         for (const card of slot.cards) {
-                            const cardData = CARD_INDEX.get(card.id.toLowerCase());
+                            const id = card.id
+                            const cardData = CARD_INDEX.get(id);
                             if (cardData) {
                                 card.title = cardData.title
                                 card.image = cardData.image
@@ -56,7 +59,7 @@ export const useSlotsSaved = defineStore('slotsSaved', {
                                 card.image = null
                                 card.originalImage = null
                                 // TODO unclear what todo in that case
-                                console.error('Cannot find card data for id:' + card.id)
+                                console.error('Cannot find card data for id:' + id)
                             }
 
                         }
