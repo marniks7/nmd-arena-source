@@ -22,7 +22,7 @@
               variant="plain"
               v-bind="props"
               density="compact"
-              prepend-icon="mdi-dots-grid"
+              :prepend-icon="mdiDotsGrid"
           >
           </v-btn>
         </template>
@@ -110,7 +110,7 @@
 import {useSlotsStore} from "@/stores/slots.ts";
 import {useDisplay} from 'vuetify'
 import {ref} from "vue";
-
+import { mdiDotsGrid } from '@mdi/js'
 const store = useSlotsStore()
 
 const display = ref(useDisplay())

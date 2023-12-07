@@ -13,6 +13,7 @@ export interface BattlefieldEffect {
     image?: string;
     originalImage?: string;
 }
+
 export interface Card {
     id: string;
     title?: string;
@@ -20,11 +21,11 @@ export interface Card {
     originalImage?: string;
     passive?: boolean
 }
+
 export const BATTLEFIELD_EFFECTS = []
 export const CARDS_LIBRARY: Card[] = []
 
 BATTLEFIELD_EFFECTS.push({
-    id: '',
     title: ''
 })
 
@@ -37,25 +38,35 @@ battlefieldEffectImages.forEach((value, index) => {
         const originalImageURL = new URL(originalName, import.meta.url).href;
         const image = value.default
         let name = originalName.split('/').pop().replace(/\.\w+$/, '');
-        const dashIndex = name.lastIndexOf('-');
 
+        const dashIndex = name.lastIndexOf('-');
+        let clearName: string
         if (dashIndex !== -1) {
-            name = name.substring(0, dashIndex);
+            clearName = name.substring(0, dashIndex);
+        } else {
+            clearName = name
         }
-        const title = name.replace('_', ' ')
-        const names = [name,
+
+        let id = clearName.replace('-', '').replace('_', '').replace(' ', '').toLowerCase();
+        const ids = [name,
             name.replace('_', ' '),
             name.replace('_', ''),
             name.replace(' ', ''),
+            clearName,
+            clearName.replace('_', ' '),
+            clearName.replace('_', ''),
+            clearName.replace(' ', ''),
+            id,
         ]
+        const title = clearName.replace('_', ' ')
         let bfe: BattlefieldEffect = {
             image: image,
             originalImage: originalImageURL,
             title: title,
-            id: name.toLowerCase()
+            id: id
         };
         BATTLEFIELD_EFFECTS.push(bfe)
-        for (const name of names) {
+        for (const name of ids) {
             BATTLEFIELD_INDEX.set(name, bfe)
             BATTLEFIELD_INDEX.set(name.toLowerCase(), bfe)
         }
@@ -76,22 +87,36 @@ passiveCardImages.forEach((value, index) => {
     const originalName = passiveCardImagesOriginal[index].default
     const originalImageURL = new URL(originalName, import.meta.url).href;
     const image = value.default;
-    const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
-    const title = cardName.replace('_', ' ')
-    const names = [cardName,
-        cardName.replace('_', ' '),
-        cardName.replace('_', ''),
-        cardName.replace(' ', ''),
+    let name = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+    const dashIndex = name.lastIndexOf('-');
+    let clearName: string
+    if (dashIndex !== -1) {
+        clearName = name.substring(0, dashIndex);
+    } else {
+        clearName = name
+    }
+
+    let id = clearName.replace('-', '').replace('_', '').replace(' ', '').toLowerCase();
+    const ids = [name,
+        name.replace('_', ' '),
+        name.replace('_', ''),
+        name.replace(' ', ''),
+        clearName,
+        clearName.replace('_', ' '),
+        clearName.replace('_', ''),
+        clearName.replace(' ', ''),
+        id,
     ]
+    const title = clearName.replace('_', ' ')
     let card: Card = {
         image: image,
         originalImage: originalImageURL,
         passive: true,
         title: title,
-        id: cardName.toLowerCase()
+        id: id
     };
     CARDS_LIBRARY.push(card);
-    for (const name of names) {
+    for (const name of ids) {
         CARD_INDEX.set(name, card)
         CARD_INDEX.set(name.toLowerCase(), card)
     }
@@ -109,7 +134,12 @@ cardImages.forEach((value, index) => {
     const originalName = cardImagesOriginal[index].default
     const originalImageURL = new URL(originalName, import.meta.url).href;
     const image = value.default;
-    const cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+    let cardName = originalName.split('/').pop().replace(/\.\w+$/, ''); // Extracts the filename without extension
+    let indexOfDash = cardName.indexOf('-');
+
+    if (indexOfDash !== -1) {
+        cardName = cardName.substring(0, indexOfDash);
+    }
     const title = cardName.replace('_', ' ')
     const names = [cardName,
         cardName.replace('_', ' '),

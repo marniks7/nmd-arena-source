@@ -1,5 +1,4 @@
 import './assets/main.css'
-import '@mdi/font/css/materialdesignicons.css'
 
 import {createApp} from 'vue'
 import router from './router'
@@ -12,7 +11,7 @@ import {createPinia} from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import {figureTheme} from "@/functions/theme";
-import {aliases, mdi} from 'vuetify/iconsets/mdi'
+import {aliases, mdi} from 'vuetify/iconsets/mdi-svg'
 
 /*https://coolors.co/3d5a80-98c1d9-e0fbfc-ee6c4d-293241*/
 const ravenNestTheme: ThemeDefinition = {
