@@ -1,21 +1,50 @@
 <template>
-  <!--  <v-container fluid="true">-->
   <v-row no-gutters flex-nowrap>
     <v-col>
-      <select v-model="slt.role" class="child-sm-p-1 text-caption text-sm-h4 text-primary">
-        <option disabled hidden class="text-caption text-sm-h4 text-primary">Choose role</option>
-        <option>Runner</option>
-        <option>Carry</option>
-        <option>Versatile</option>
-        <option>Master of Fish</option>
-        <option>Support</option>
-      </select>
-      <select v-model="slt.roleOption" class="text-caption text-sm-h6 text-secondary">
-        <option></option>
-        <option>Option1</option>
-        <option>Option2</option>
-        <option>Option3</option>
-      </select>
+      <v-select v-model="slt.role"
+                density="compact"
+                hide-details
+                bg-color="undefined"
+                base-color="background"
+                variant="plain"
+                class="child-sm-p-1"
+                :items="['Choose role', 'Runner', 'Carry', 'Versatile', 'Master of Fish', 'Support']"
+                menu-icon=""
+                single-line
+      >
+        <template #selection="{ item }">
+          <span class="child-sm-p-1 text-caption text-sm-h4 text-primary"> {{ item.title }}</span>
+        </template>
+        <template #item="{ item, props }">
+          <v-list-item v-bind="props">
+            <template #title>
+              <span>{{ item.title }}</span>
+            </template>
+          </v-list-item>
+        </template>
+      </v-select>
+      <v-select v-model="slt.roleOption"
+                density="compact"
+                hide-details="true"
+                bg-color="undefined"
+                base-color="background"
+                variant="plain"
+                class="child-sm-p-1"
+                :items="['', 'Option1', 'Option2', 'Option3']"
+                menu-icon=""
+                single-line
+      >
+        <template #selection="{ item }">
+          <span class="text-caption text-sm-h6 text-secondary"> {{ item.title }}</span>
+        </template>
+        <template #item="{ item, props }">
+          <v-list-item v-bind="props">
+            <template #title>
+              <span>{{ item.title }}</span>
+            </template>
+          </v-list-item>
+        </template>
+      </v-select>
       <v-menu max-width="200">
         <template v-slot:activator="{ props }">
           <v-btn
@@ -80,12 +109,12 @@
     >
       <div v-if="slot.cards.length > 0">
         <div v-for="(card, index) in slot.cards" :key="index">
-          <v-img :src="card.originalImage" :alt="card.title"  @dragstart="startDrag(card, slot, $event)"
+          <v-img :src="card.originalImage" :alt="card.title" @dragstart="startDrag(card, slot, $event)"
                  @dragend="endDrag(card, slot, $event)"
                  @click="removeCard(card, slot, $event)"
                  draggable="true">
-            <template #sources>
-              <source :srcset="card.image">
+            <template data-html2canvas-ignore #sources>
+              <source data-html2canvas-ignore :srcset="card.image">
             </template>
           </v-img>
         </div>
@@ -103,14 +132,14 @@
 
     </v-col>
   </v-row>
-  <!--  </v-container>-->
 </template>
 
 <script setup>
 import {useSlotsStore} from "@/stores/slots.ts";
 import {useDisplay} from 'vuetify'
 import {ref} from "vue";
-import { mdiDotsGrid } from '@mdi/js'
+import {mdiDotsGrid} from '@mdi/js'
+
 const store = useSlotsStore()
 
 const display = ref(useDisplay())

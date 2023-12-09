@@ -8,7 +8,7 @@
                   hide-details="true"
                   bg-color="undefined"
                   base-color="background"
-                  variant="underlined"
+                  variant="plain"
                   class="child-sm-p-1"
                   :items=maps
                   menu-icon=""
@@ -32,9 +32,10 @@
                   density="compact"
                   hide-details="true"
                   bg-color="undefined"
-                  class="ma-0 pa-0 child-sm-p-1"
+                  class="child-sm-p-1 min-width"
                   base-color="background"
                   menu-icon=""
+                  variant="plain"
                   single-line
                   :items="BATTLEFIELD_EFFECTS"
                   @update:modelValue="onBattlefieldSelected"
@@ -378,6 +379,9 @@ export default {
   .child-sm-p-1 ::v-deep(.v-field) {
     --v-field-padding-start: 4px;
   }
+}
+.min-width {
+  min-width: 5em;
 }
 
 </style>
