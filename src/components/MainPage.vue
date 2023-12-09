@@ -313,6 +313,8 @@ export default {
         // Without taking height of main workspace  it will copy entire page
         // if I take screenshot of main-workspace it will be without theme
         height: mainWorkspace.offsetHeight,
+        x: mainWorkspace.offsetLeft,
+        width: mainWorkspace.offsetWidth,
       }).then((canvas) => {
         canvas.toBlob((blob) => {
           // Check if ClipboardItem is supported
