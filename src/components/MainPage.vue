@@ -43,8 +43,8 @@
           <template v-slot:selection="{ item }">
             <div class="d-inline-flex align-center v-list--density-compact">
               <v-img class="scale mr-1" :src="item.raw.originalImage">
-                <template #sources>
-                  <source :srcset="item.raw.image">
+                <template data-html2canvas-ignore #sources>
+                  <source data-html2canvas-ignore :srcset="item.raw.image">
                 </template>
               </v-img>
               <span class="text-sm-h6 text-secondary">  {{ item.title }}</span>
