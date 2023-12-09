@@ -4,7 +4,7 @@ import {BATTLEFIELD_INDEX, CARD_INDEX} from "@/stores/cards";
 
 const initialRow = {
     id: v4(),
-    role: "Choose role",
+    role: null,
     roleOption: "",
     slots: [
         {id: 1, cards: [], label_not_selected: 'Empty slot'},

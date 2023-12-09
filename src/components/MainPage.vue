@@ -1,6 +1,21 @@
 <template xmlns="http://www.w3.org/1999/html">
   <v-container id="main-workspace">
     <v-row no-gutters justify-sm="space-between">
+      <v-col>
+        <v-text-field
+            density="compact"
+            hide-details
+            single-line
+            solo
+            flat
+            variant="plain"
+            bg-color="undefined"
+            base-color="background"
+            class="ma-0 pa-0"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row no-gutters justify-sm="space-between">
       <v-col align-self="start">
         <v-select label="Map"
                   v-model="store.map"
@@ -11,6 +26,7 @@
                   variant="plain"
                   class="child-sm-p-1"
                   :items=maps
+                  single-line
                   menu-icon=""
                   @update:modelValue="onMapSelected"
         >
@@ -66,16 +82,6 @@
           </template>
         </v-select>
       </v-col>
-      <!--      <v-col align-self="end" cols="1">-->
-      <!--        <v-text-field-->
-      <!--            density="compact"-->
-      <!--            hide-details-->
-      <!--            single-line-->
-      <!--            bg-color="undefined"-->
-      <!--            base-color="background"-->
-      <!--            class="ma-0 pa-0"-->
-      <!--        ></v-text-field>-->
-      <!--      </v-col>-->
     </v-row>
     <v-row no-gutters v-for="item in store.items" :key="item.id">
       <v-col>
@@ -382,6 +388,7 @@ export default {
     --v-field-padding-start: 4px;
   }
 }
+
 .min-width {
   min-width: 5em;
 }

@@ -1,14 +1,15 @@
 <template>
   <v-row no-gutters flex-nowrap>
     <v-col>
-      <v-select v-model="slt.role"
+      <v-select label="Role"
+                v-model="slt.role"
                 density="compact"
                 hide-details
                 bg-color="undefined"
                 base-color="background"
                 variant="plain"
                 class="child-sm-p-1"
-                :items="['Choose role', 'Runner', 'Carry', 'Versatile', 'Master of Fish', 'Support']"
+                :items="['Runner', 'Carry', 'Versatile', 'Master of Fish', 'Support']"
                 menu-icon=""
                 single-line
       >
