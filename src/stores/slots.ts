@@ -6,6 +6,8 @@ const initialRow = {
     id: v4(),
     role: null,
     roleOption: "",
+    isSlotsDescription: false,
+    slotsDescription: "",
     slots: [
         {id: 1, cards: [], label_not_selected: 'Empty slot'},
         {id: 2, cards: [], label_not_selected: 'Empty slot'},
@@ -18,6 +20,7 @@ const initialState = {
     id: v4(),
     map: null,
     battlefieldEffect: null,
+    description: null,
     items: [JSON.parse(JSON.stringify(initialRow))],
 };
 
@@ -123,6 +126,30 @@ export const useSlotsStore = defineStore('slots', {
             if (index !== -1 && index > 0 && index < this.items.length) {
                 this.items.splice(index, 1)
                 this.items.splice(index - 1, 0, elementToMove);
+            }
+        },
+        showSlotsDescription(itemId: string) {
+            let elementToMove = undefined
+            this.items.some((savedElement, i) => {
+                if (savedElement.id === itemId) {
+                    elementToMove = savedElement
+                    return true
+                }
+            })
+            if (elementToMove) {
+                elementToMove.isSlotsDescription = true
+            }
+        },
+        hideSlotsDescription(itemId: string) {
+            let elementToMove = undefined
+            this.items.some((savedElement, i) => {
+                if (savedElement.id === itemId) {
+                    elementToMove = savedElement
+                    return true
+                }
+            })
+            if (elementToMove) {
+                elementToMove.isSlotsDescription = false
             }
         },
         moveDown(itemId: string) {

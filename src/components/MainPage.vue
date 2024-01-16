@@ -3,6 +3,8 @@
     <v-row no-gutters justify-sm="space-between">
       <v-col>
         <v-text-field
+            id="description"
+            v-model="store.description"
             density="compact"
             hide-details
             single-line
@@ -11,7 +13,7 @@
             variant="plain"
             bg-color="undefined"
             base-color="background"
-            class="ma-0 pa-0"
+            class="ma-0 pa-1"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -168,7 +170,7 @@
                 <p class="d-inline" v-if="store.battlefieldEffect"> and battlefield effect:</p>
                 <p class="d-inline font-weight-bold" v-if="store.battlefieldEffect">{{ store.battlefieldEffect }}</p>
                 <p>
-                  Next time whenever you choose map and battlefield effect - the cards and roles will be loaded.
+                  Next time whenever you choose map and/or battlefield effect - the cards and roles will be loaded.
                 </p>
                 <p>
                 </p>

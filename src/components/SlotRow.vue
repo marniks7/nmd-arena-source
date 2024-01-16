@@ -98,7 +98,20 @@
               </v-card>
             </template>
           </v-dialog>
+          <v-list-item
+              :key="4"
+              :value="4"
+          >
+            <v-list-item-title class="mr-1" @click="store.showSlotsDescription(slt.id)">Show description field</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+              :key="5"
+              :value="5"
+          >
+            <v-list-item-title class="mr-1" @click="store.hideSlotsDescription(slt.id)">Hide description field</v-list-item-title>
+          </v-list-item>
         </v-list>
+
       </v-menu>
     </v-col>
     <v-col
@@ -131,6 +144,21 @@
         <span class="text-lg-h5 text-subtitle-2 text-info">{{ slot.label_not_selected }}</span>
       </div>
 
+    </v-col>
+  </v-row>
+  <v-row no-gutters flex-nowrap v-if="slt.isSlotsDescription">
+    <v-col>
+      <v-textarea rows="1"
+                  v-model="slt.slotsDescription"
+                  auto-grow
+                  label="Slots description"
+                  density="compact"
+                  hide-details
+                  single-line
+                  variant="plain"
+                  bg-color="undefined"
+                  base-color="background"
+                  class="pa-1 shrink text-sm-subtitle-2 text-caption text-info"></v-textarea>
     </v-col>
   </v-row>
 </template>
